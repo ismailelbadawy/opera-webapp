@@ -1,11 +1,19 @@
 {
+  "include": [
+    "backend/**/*.ts",
+    "shared/**/*.ts",
+    "frontend/"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -17,6 +25,7 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    
   }
 }
