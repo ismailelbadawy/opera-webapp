@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "backend-dev" : "ts-node-dev --respawn --transpileOnly ./backend/src/server.ts"
+    "backend-dev" : "ts-node-dev --respawn --transpileOnly ./backend/src/server.ts",
+    "angular" : "cd frontend && ng serve"
   },
   "private": true,
   "dependencies": {
