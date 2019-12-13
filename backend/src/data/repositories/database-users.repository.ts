@@ -2,6 +2,7 @@ import { IUsersRepository } from 'shared/repository-base/users.repository';
 import { User } from "shared/domain/user.model";
 import { UserSchema } from '../schemas/user.schema';
 import { model } from 'mongoose';
+import { PasswordSecurer } from '../utility/password.generator';
 
 var mongoose = require('mongoose');
 
@@ -17,8 +18,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     register(user: User, password : string): Promise<User> {
         return new Promise((resolve, reject) => {
-
-
+            let passwordObject = new PasswordSecurer().securePassword(password);
             var userToInsert = new UserModel({
                 userName: user.username,
                 email: user.email,
@@ -28,8 +28,8 @@ export class DatabaseUsersRepository implements IUsersRepository {
                 birthDate: user.birthDate,
                 city: user.city,
                 password: {
-                    passwordHash: user.passwordHash,
-                    passwordSalt: user.paswordSalt
+                    passwordHash: passwordObject.passwordHash,
+                    passwordSalt: passwordObject.passwordSalt
                 },
                 address: user.address
             });
