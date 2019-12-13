@@ -1,4 +1,5 @@
 import { IEventsRepository } from 'shared/repository-base/events.repository';
+import { Event } from 'shared/domain/event.model';
 
 export class DatabaseEventsRepository implements IEventsRepository {
     createEvent(event: Event): Promise<Event> {

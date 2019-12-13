@@ -1,3 +1,5 @@
+import { Event } from 'shared/domain/event.model';
+
 export abstract class IEventsRepository{
     
     abstract createEvent(event:Event):Promise<Event>;
