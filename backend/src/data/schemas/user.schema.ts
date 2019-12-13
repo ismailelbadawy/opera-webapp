@@ -10,6 +10,10 @@ export const UserSchema : Schema = new Schema({
         type : String,
         index: true 
     },
+    userType : {
+        type: Number,
+        required: 'Must have a type'
+    },
     email : {
         type : String,
         required : function() {

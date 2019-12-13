@@ -1,8 +1,8 @@
 import { IUsersRepository } from 'shared/repository-base/users.repository';
-import { User } from "shared/domain/user.model";
+import { User, UserType } from "shared/domain/user.model";
 import { UserSchema } from '../schemas/user.schema';
 import { model } from 'mongoose';
-import { PasswordSecurer } from '../utility/password.generator';
+import { PasswordSecurer, Password } from '../utility/password.generator';
 
 var mongoose = require('mongoose');
 
@@ -13,10 +13,21 @@ mongoose.connection;
 export class DatabaseUsersRepository implements IUsersRepository {
 
     login(username: string, password: string): Promise<User> {
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => {
+            UserModel.findOne({ userName: username }).then((value: any) => {
+                let isCorrect = new PasswordSecurer().comparePassword(password, new Password(value.password.passwordSalt, value.password.passwordSalt));
+                if (isCorrect) {
+                    resolve(new User(value._id, value.userType, value.userName, value.firstName, value.lastName, value.birthDate, value.gender, value.city, value.email, value.address, null, null));
+                }else {
+                    reject('Passwords do not match');
+                }
+            }).catch((err) => {
+                reject('Username not found');
+            });
+        });
     }
 
-    register(user: User, password : string): Promise<User> {
+    register(user: User, password: string): Promise<User> {
         return new Promise((resolve, reject) => {
             let passwordObject = new PasswordSecurer().securePassword(password);
             var userToInsert = new UserModel({
@@ -31,12 +42,13 @@ export class DatabaseUsersRepository implements IUsersRepository {
                     passwordHash: passwordObject.passwordHash,
                     passwordSalt: passwordObject.passwordSalt
                 },
+                userType: user.userType.valueOf(),
                 address: user.address
             });
             UserModel.insertMany([
                 userToInsert
             ], (err, result) => {
-                if(err) {
+                if (err) {
                     reject(err);
                     return;
                 }
