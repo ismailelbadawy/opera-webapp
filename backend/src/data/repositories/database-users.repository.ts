@@ -1,5 +1,5 @@
 import { IUsersRepository } from 'shared/repository-base/users.repository';
-import { User, UserType } from "shared/domain/user.model";
+import { User, UserType } from "../../../../shared/domain/user.model";
 import { UserSchema } from '../schemas/user.schema';
 import { model } from 'mongoose';
 import { PasswordSecurer, Password } from '../utility/password.generator';
@@ -71,7 +71,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
         throw new Error("Method not implemented.");
     }
 
-    changeUserType(userId: string): Promise<User> {
+    changeUserType(userId: string, usertype: UserType): Promise<User> {
         throw new Error("Method not implemented.");
     }
 

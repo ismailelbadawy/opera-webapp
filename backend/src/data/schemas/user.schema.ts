@@ -1,55 +1,52 @@
 import { Schema } from "mongoose";
 
-export const UserSchema : Schema = new Schema({
-    userId : {
-        type : String,
-        required : 'A user must have an id',
-        index : true
+export const UserSchema: Schema = new Schema({
+    userId: {
+        type: String,
+        required: 'A user must have an id',
+        index: true
     },
-    userName : {
-        type : String,
-        index: true 
+    userName: {
+        type: String,
+        index: true
     },
-    userType : {
+    userType: {
         type: Number,
         required: 'Must have a type'
     },
-    email : {
-        type : String,
-        required : function() {
+    email: {
+        type: String,
+        required: function () {
             var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
             return emailRegex.test(this.email);
         },
-        index : true
+        index: true
     },
-    firstName : {
-        type : String
-    },
-    lastName : {
+    firstName: {
         type: String
     },
-    gender : {
-        type : String,
+    lastName: {
+        type: String
+    },
+    gender: {
+        type: String,
         enum: ['male', 'female']
     },
-    birthDate : {
+    birthDate: {
         type: Date
     },
-    city : {
-        type : String
+    city: {
+        type: String
     },
-    password : {
-        passwordHash : {
-            type : String,
-            required: 'Password hash must be present'
-        },
-        passwordSalt : {
-            type : String,
-            required : `Pasword salt must be present`
-        },
-        required : 'Password must be present'
+    passwordHash: {
+        type: String,
+        required: 'Password hash must be present'
     },
-    address : {
+    passwordSalt: {
+        type: String,
+        required: `Pasword salt must be present`
+    },
+    address: {
         type: String
     }
 });
