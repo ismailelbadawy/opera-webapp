@@ -5,5 +5,4 @@ export abstract class IEventsRepository{
     abstract uploadPosterUrl(eventId: string, posterUrl : string) : Promise<boolean>;
     abstract editEvent(event:Event):Promise<Event>;
     abstract viewAvailableEvents():Promise<Event[]>;
-
 }
