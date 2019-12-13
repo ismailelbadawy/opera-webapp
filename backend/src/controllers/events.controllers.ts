@@ -3,7 +3,6 @@ import { IEventsRepository } from 'shared/repository-base/events.repository';
 import { DatabaseEventsRepository } from '../data/repositories/database-events.repository';
 import { Event } from 'shared/domain/event.model';
 import { Hall } from 'shared/domain/hall.model';
-import { request } from 'http';
 
 class EventsController {
     public path = "/events";
@@ -18,7 +17,7 @@ class EventsController {
         this.router.get(this.path, this.getAllEvents);
         this.router.post(this.path,this.createEvent);
         this.router.put(this.path,this.editEvent);
-        this.router.put(this.path+'/poster',this.uploadPosterUrl);
+        this.router.put(this.path+'/upload-poster',this.uploadPosterUrl);
         this.router.delete(this.path,this.cancelEvent);
     }
 

@@ -9,5 +9,5 @@ export abstract class IUsersRepository{
     abstract login(username : string, password : string) : Promise<User>;
     
     /**Creates the user */
-    abstract register(user : User) : Promise<User>;
+    abstract register(user : User, password : string) : Promise<User>;
 }

@@ -72,7 +72,7 @@ export class User {
         this._userId = value;
     }
    constructor(
-       private _userId: string | null,
+       private _userId: string|null,
        private _userType: UserType,
        private _username: string,
        private _firstName: string | null,
@@ -84,6 +84,7 @@ export class User {
        private _address: string | null,
        private _passwordHash: string | null,
        private _paswordSalt: string | null
+
        ){
 
    } 

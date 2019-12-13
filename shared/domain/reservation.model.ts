@@ -49,8 +49,9 @@ export class Reservation {
 
 export class Seat{
     constructor(
-        private _row:number|null,
-        private _column:number|null
+        private _row : number | null,
+        private _column: number | null,
+        private _available : boolean | null
         ){
 
         }
