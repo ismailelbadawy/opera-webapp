@@ -1,10 +1,10 @@
 import { Hall } from './hall.model';
 
 export class Event {
-    public get eventId(): string {
+    public get eventId(): string|null {
         return this._eventId;
     }
-    public set eventId(value: string) {
+    public set eventId(value: string|null) {
         this._eventId = value;
     }
     
@@ -44,7 +44,7 @@ export class Event {
     }
     
     constructor(
-        private _eventId: string,
+        private _eventId: string|null,
         private _eventName: string | null,
         private _description: string | null,
         private _posterUrl: string | null,

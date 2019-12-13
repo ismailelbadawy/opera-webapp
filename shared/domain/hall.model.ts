@@ -1,8 +1,8 @@
 export class Hall {
-    public get hallId(): string {
+    public get hallId(): string|null {
         return this._hallId;
     }
-    public set hallId(value: string) {
+    public set hallId(value: string|null) {
         this._hallId = value;
     }
     
@@ -22,7 +22,7 @@ export class Hall {
     }
 
     constructor(
-        private _hallId: string,
+        private _hallId: string|null,
         private _hallName: string | null,
         /** Represents the dimensions of the hall 10x10 */
         private _hallShape: number | null
