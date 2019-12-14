@@ -14,8 +14,9 @@ class HallsController {
     }
     public initializeRouters() {
 
-        this.router.post(this.path,this.createHall)
-        this.router.put(this.path, this.editHall)
+        this.router.post(this.path,this.createHall);
+        this.router.put(this.path, this.editHall);
+        this.router.get(this.path, this.getHalls);
     }
 
     createHall = async (request: express.Request, response: express.Response) => {
@@ -72,6 +73,15 @@ class HallsController {
         }
     }
 
+    getHalls = async (request : express.Request, response : express.Response) => {
+        try{
+            let halls = await this.hallsRepository.getAllHalls();
+            response.status(200).json(halls);
+        }catch(e) {
+            console.log(e);
+            response.status(500).json(e);
+        }
+    }
 
 }
 

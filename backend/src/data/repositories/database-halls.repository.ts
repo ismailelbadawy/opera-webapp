@@ -36,19 +36,36 @@ export class DatabaseHallsRepository extends IHallsRepository {
     editHall(hall: Hall): Promise<Hall> {
         return new Promise((resolve, reject) => {
             try {
-               Halls.findByIdAndUpdate(hall.hallId, {
-                   hallName : hall.hallName,
-                   hallWidth : hall.hallShape,
-                   hallLength : hall.hallShape
-               }, (err, result) => {
-                   if(err) {
-                       reject(err);
-                       return;
-                   }
-                   Halls.findOne({ _id : hall.hallId}, (err, doc) => {
-                       resolve(new Hall(doc._id, doc.get('hallName'), doc.get('hallWidth')));
-                   })
-               });
+                Halls.findByIdAndUpdate(hall.hallId, {
+                    hallName: hall.hallName,
+                    hallWidth: hall.hallShape,
+                    hallLength: hall.hallShape
+                }, (err, result) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    Halls.findOne({ _id: hall.hallId }, (err, doc) => {
+                        resolve(new Hall(doc._id, doc.get('hallName'), doc.get('hallWidth')));
+                    })
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    getAllHalls(): Promise<Hall[]> {
+        return new Promise((resolve, reject) => {
+            try {
+                Halls.find({}, (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        let halls = result.map(s => new Hall(s._id, s.get('hallName'), s.get('hallWidth')));
+                        resolve(halls);
+                    }
+                });
             } catch (e) {
                 reject(e);
             }
