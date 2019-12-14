@@ -9,7 +9,8 @@ import { DatabaseHallsRepository } from './data/repositories/database-halls.repo
 const app = new App(
   [
     new HallsController(new DatabaseHallsRepository()),
-    new UsersController(new DatabaseUsersRepository())
+    new UsersController(new DatabaseUsersRepository()),
+    new EventsController(new DatabaseEventsRepository())
   ],
   4200,
 );

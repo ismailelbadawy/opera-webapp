@@ -3,10 +3,12 @@ import { ObjectID } from 'bson';
 
 export const EventSchema = new Schema({
     eventName : {
-        type : String
+        type : String,
+        required : 'missing event name'
     },
     description : {
-        type : String
+        type : String,
+        required : 'missing description'
     },
     posterUrl : {
         type : String

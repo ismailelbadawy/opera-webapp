@@ -68,7 +68,7 @@ class EventsController {
                 request.body.posterUrl,
                 request.body.startsAt,
                 new Hall(request.body.hallId, null, null))
-            let dbResponse = this.eventsRepository.createEvent(event).then(() => {
+            this.eventsRepository.createEvent(event).then((dbResponse) => {
                 return response.status(200).json(dbResponse);
             }).catch((error) => {
                 console.log(error);
@@ -96,7 +96,7 @@ class EventsController {
                 request.body.posterUrl,
                 request.body.startsAt,
                 new Hall(null, null, null))
-            let dbResponse = this.eventsRepository.editEvent(event).then(() => {
+            this.eventsRepository.editEvent(event).then((dbResponse) => {
                 return response.status(200).json(dbResponse);
             }).catch((error) => {
                 console.log(error);
@@ -116,7 +116,7 @@ class EventsController {
             if (!request.body.eventId) {
                 return response.status(400).json({ "message": "no eventId in body was sent" })
             }
-            let dbResponse = this.eventsRepository.cancelEvent(request.body.eventId).then(() => {
+            this.eventsRepository.cancelEvent(request.body.eventId).then((dbResponse) => {
                 return response.status(200).json(dbResponse)
             }).catch((error) => {
                 console.log(error);
