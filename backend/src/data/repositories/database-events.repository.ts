@@ -99,8 +99,9 @@ export class DatabaseEventsRepository implements IEventsRepository {
                     if (err) {
                         reject(err);
                     } else {
-                        let halls = result.map(s => new Event(s._id, s.get('eventName'), s.get('description'),s.get('posterUrl'),s.get('startsAt'),s.get('hallId')));
-                        resolve(halls);
+                        console.log(result);
+                        let events = result.map(s => new Event(s._id, s.get('eventName'), s.get('description'),s.get('posterUrl'),s.get('startsAt'),s.get('hallId')));
+                        resolve(events);
                     }
                 });
             } catch (e) {

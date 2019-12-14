@@ -131,7 +131,7 @@ class EventsController {
     }
     getAllEvents = async (request: express.Request, response: express.Response) => {
         try {
-            let events = this.eventsRepository.viewAvailableEvents().then(() => {
+            this.eventsRepository.viewAvailableEvents().then((events) => {
                 return response.status(200).json(events)
             }).catch((error: Error) => {
                 console.log(error);
