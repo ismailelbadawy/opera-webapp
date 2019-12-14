@@ -1,8 +1,8 @@
 import * as express from 'express';
-import { IHallsRepository } from 'shared/repository-base/halls.repository';
+import { IHallsRepository } from '../../../shared/repository-base/halls.repository';
 import { DatabaseHallsRepository } from '../data/repositories/database-halls.repository';
-import { Event } from 'shared/domain/event.model';
-import { Hall } from 'shared/domain/hall.model';
+import { Event } from '../../../shared/domain/event.model';
+import { Hall } from '../../../shared/domain/hall.model';
 class HallsController {
 
     public path = "/halls";
@@ -34,7 +34,7 @@ class HallsController {
                 request.body.hallName,
                 request.body.hallShape
             )
-            let dbResponse = this.hallsRepository.createHall(hall).then(() => {
+            this.hallsRepository.createHall(hall).then((dbResponse) => {
                 return response.status(200).json(dbResponse);
             }).catch((error) => {
                 console.log(error);
@@ -60,7 +60,7 @@ class HallsController {
                 request.body.hallName,
                 request.body.hallShape
             )
-            let dbResponse = this.hallsRepository.editHall(hall).then(() => {
+            this.hallsRepository.editHall(hall).then((dbResponse) => {
                 return response.status(200).json(dbResponse);
             }).catch((error) => {
                 console.log(error);
