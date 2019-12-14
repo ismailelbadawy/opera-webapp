@@ -19,7 +19,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
             UserModel.findOne({ userName: username }).then((value: any) => {
                 let isCorrect = new PasswordSecurer().comparePassword(password, new Password(value.password.passwordSalt, value.password.passwordSalt));
                 if (isCorrect) {
-                    resolve(new User(value._id, value.userType, value.userName, value.firstName, value.lastName, value.birthDate, value.gender, value.city, value.email, value.address, null, null));
+                    resolve(new User(value._id, value.userType, value.userName, value.firstName, value.lastName, value.birthDate, value.gender, value.city, value.email, value.address, null, null, value.approved));
                 } else {
                     reject('Passwords do not match');
                 }
@@ -45,7 +45,8 @@ export class DatabaseUsersRepository implements IUsersRepository {
                     passwordHash: passwordObject.passwordHash,
                     passwordSalt: passwordObject.passwordSalt,
                     userType: user.userType.valueOf(),
-                    address: user.address
+                    address: user.address,
+                    approved : false
                 });
             }catch(e) {
                 console.log(e);
@@ -75,7 +76,6 @@ export class DatabaseUsersRepository implements IUsersRepository {
                     gender: user.gender,
                     birthDate: user.birthDate,
                     city: user.city,
-                    userType: user.userType.valueOf(),
                     address: user.address
                 },
                 async (err, result) => {
@@ -95,7 +95,8 @@ export class DatabaseUsersRepository implements IUsersRepository {
                         result.get('email'),
                         result.get('address'),
                         null, 
-                        null
+                        null,
+                        result.get('approved')
                     );
                     resolve(dbUser);
                 }
@@ -104,15 +105,76 @@ export class DatabaseUsersRepository implements IUsersRepository {
     }
 
     approveUser(user: User): Promise<User> {
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => {
+            UserModel.findByIdAndUpdate(user.userId, 
+                {
+                    approved : true
+                },
+                async (err, result) => {
+                    if(err) {
+                        reject(err);
+                        return;
+                    }
+                    let dbUser = new User(
+                        result._id,
+                        result.get('userType'),
+                        result.get('username'),
+                        result.get('firstName'),
+                        result.get('lastName'),
+                        result.get('birthDate'),
+                        result.get('gender'),
+                        result.get('city'),
+                        result.get('email'),
+                        result.get('address'),
+                        null, 
+                        null,
+                        result.get('approved')
+                    );
+                    resolve(dbUser);
+                }
+            );
+        });
     }
 
     removeUser(userId: string): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => {
+            let query = UserModel.remove({ _id : userId}, (err) => reject(err));
+            query.then((value) => {
+                resolve(value.deletedCount != 0);
+            });
+        });
     }
 
     changeUserType(userId: string, usertype: UserType): Promise<User> {
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => {
+            UserModel.findByIdAndUpdate(userId, 
+                {
+                    userType: usertype.valueOf(),
+                },
+                async (err, result) => {
+                    if(err) {
+                        reject(err);
+                        return;
+                    }
+                    let dbUser = new User(
+                        result._id,
+                        result.get('userType'),
+                        result.get('username'),
+                        result.get('firstName'),
+                        result.get('lastName'),
+                        result.get('birthDate'),
+                        result.get('gender'),
+                        result.get('city'),
+                        result.get('email'),
+                        result.get('address'),
+                        null, 
+                        null,
+                        result.get('approved')
+                    );
+                    resolve(dbUser);
+                }
+            );
+        });
     }
 
 }
