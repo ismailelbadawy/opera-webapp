@@ -46,7 +46,12 @@ class App {
 
     private mongoSetup(): void {
         mongoose.Promise = global.Promise;
-        mongoose.connect(this.mongoUrl);
+        mongoose.connect(this.mongoUrl, {
+            useCreateIndex: true,
+            useFindAndModify: true,
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
     }
 
     private serveAngular(): void {
