@@ -1,7 +1,10 @@
-import { IEventsRepository } from 'shared/repository-base/events.repository';
-import { Event } from 'shared/domain/event.model';
+import { IEventsRepository } from '../../../../shared/repository-base/events.repository';
+import { Event } from '../../../../shared/domain/event.model';
+import { Seat } from '../../../../shared/domain/reservation.model';
+
 
 export class DatabaseEventsRepository implements IEventsRepository {
+    
     createEvent(event: Event): Promise<Event> {
         throw new Error("Method not implemented.");
     }    
@@ -17,6 +20,7 @@ export class DatabaseEventsRepository implements IEventsRepository {
     viewAvailableEvents(): Promise<Event[]> {
         throw new Error("Method not implemented.");
     }
-
-    
+    getSeatsFroEvent(): Promise<Seat[][]> {
+        throw new Error("Method not implemented.");
+    }
 }
