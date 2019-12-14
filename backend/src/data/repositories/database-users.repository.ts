@@ -204,4 +204,17 @@ export class DatabaseUsersRepository implements IUsersRepository {
         });
     }
 
+    getUnapprovedUsers(): Promise<User[]> {
+        return new Promise((resolve, reject) => {
+            UserModel.find({ approved: false}, (err, res) => {
+                if(err) {
+                    reject(err);
+                    return;
+                }
+                let users = res.map(s => new User(s._id,null, null, null, null, null, null, null, null, null, null, null, false));
+                resolve(users);
+            });
+        });
+    }
+
 }
