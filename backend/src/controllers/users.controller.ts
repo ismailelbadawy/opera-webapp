@@ -21,8 +21,7 @@ class UsersController {
         this.router.put(this.path, this.editUser);
         this.router.put(this.path + '/type', this.changeType);
         this.router.post(this.path + '/approve', this.approveUser);
-
-
+        this.router.get(this.path + '/unapproved', this.getUnapprovedUser);
     }
 
     login = async (request: express.Request, response: express.Response) => {
@@ -218,6 +217,20 @@ class UsersController {
         } catch (error) {
             console.log(error);
 
+        }
+    }
+
+    getUnapprovedUser = async (request : express.Request, response : express.Response) => {
+        try{
+            this.usersRepository.getUnapprovedUsers().then((users) => {
+                return response.status(200).json(users);
+            }).catch((e) => {
+                console.log(e);
+                return response.status(500).json(e);
+            })
+        }catch(e) {
+            console.log(e);
+            response.status(500).json(e);
         }
     }
 }
