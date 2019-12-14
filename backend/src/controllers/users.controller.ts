@@ -150,11 +150,11 @@ class UsersController {
                 null,
                 null
             )
-            let dbResponse = this.usersRepository.approveUser(user).then(() => {
+            this.usersRepository.approveUser(user).then((dbResponse) => {
                 return response.status(200).json(dbResponse)
             }).catch((error) => {
                 console.log(error);
-                return response.status(500).json(error);
+                return response.status(400).json(error);
             })
 
         } catch (error) {
@@ -171,7 +171,7 @@ class UsersController {
             if (request.body.userType == null) {
                 return response.status(400).json({ "message": "no userType in body was sent" })
             }
-            let dbResponse = this.usersRepository.changeUserType(request.body.userId,request.body.userType).then(() => {
+            this.usersRepository.changeUserType(request.body.userId,request.body.userType).then((dbResponse) => {
                 return response.status(200).json(dbResponse)
             }).catch((error) => {
                 console.log(error);
@@ -206,7 +206,7 @@ class UsersController {
                 null,
                 null
             )
-            let dbResponse = this.usersRepository.editData(user).then(() => {
+            this.usersRepository.editData(user).then((dbResponse) => {
                 return response.status(200).json(dbResponse)
             }).catch((error) => {
                 console.log(error);
