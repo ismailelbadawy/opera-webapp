@@ -15,12 +15,12 @@ class UsersController {
         this.initializeRoutes();
     }
     public initializeRoutes() {
-        this.router.get(this.path+'/login', this.login);
-        this.router.post(this.path,this.register);
-        this.router.delete(this.path,this.removeUser);
-        this.router.put(this.path,this.editUser);
-        this.router.put(this.path+'/type',this.changeType);
-        this.router.post(this.path+'/approve',this.approveUser);
+        this.router.get(this.path + '/login', this.login);
+        this.router.post(this.path, this.register);
+        this.router.delete(this.path, this.removeUser);
+        this.router.put(this.path, this.editUser);
+        this.router.put(this.path + '/type', this.changeType);
+        this.router.post(this.path + '/approve', this.approveUser);
 
 
     }
@@ -83,7 +83,7 @@ class UsersController {
             if (!request.body.password) {
                 return response.status(400).json({ "message": "no password in body was sent" })
             }
-            
+
             let user = new User(
                 null,
                 request.body.userType,
@@ -95,6 +95,7 @@ class UsersController {
                 request.body.city,
                 request.body.email,
                 request.body.address,
+                null,
                 null,
                 null
             )
@@ -148,6 +149,7 @@ class UsersController {
                 null,
                 null,
                 null,
+                null,
                 null
             )
             this.usersRepository.approveUser(user).then((dbResponse) => {
@@ -163,29 +165,29 @@ class UsersController {
         }
     }
 
-    changeType = async(request:express.Request, response:express.Response)=>{
-        try{
+    changeType = async (request: express.Request, response: express.Response) => {
+        try {
             if (!request.body.userId) {
                 return response.status(400).json({ "message": "no userId in body was sent" })
             }
             if (request.body.userType == null) {
                 return response.status(400).json({ "message": "no userType in body was sent" })
             }
-            this.usersRepository.changeUserType(request.body.userId,request.body.userType).then((dbResponse) => {
+            this.usersRepository.changeUserType(request.body.userId, request.body.userType).then((dbResponse) => {
                 return response.status(200).json(dbResponse)
             }).catch((error) => {
                 console.log(error);
                 return response.status(500).json(error);
             })
 
-        }catch(error){
+        } catch (error) {
             console.log(error);
-            return response.status(500).json(error); 
+            return response.status(500).json(error);
         }
     }
 
-    editUser = async(request:express.Request, response:express.Response)=>{
-        try{
+    editUser = async (request: express.Request, response: express.Response) => {
+        try {
             if (!request.body) {
                 return response.status(400).json({ "message": "no body request was sent" })
             }
@@ -204,6 +206,7 @@ class UsersController {
                 request.body.email,
                 request.body.address,
                 null,
+                null,
                 null
             )
             this.usersRepository.editData(user).then((dbResponse) => {
@@ -212,9 +215,9 @@ class UsersController {
                 console.log(error);
                 return response.status(500).json(error);
             })
-        }catch(error){
+        } catch (error) {
             console.log(error);
-            
+
         }
     }
 }

@@ -83,8 +83,8 @@ export class User {
        private _email: string,
        private _address: string | null,
        private _passwordHash: string | null,
-       private _paswordSalt: string | null
-
+       private _paswordSalt: string | null,
+       private _approved : boolean | null
        ){
 
    } 

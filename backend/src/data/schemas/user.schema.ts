@@ -43,5 +43,8 @@ export const UserSchema: Schema = new Schema({
     },
     address: {
         type: String
+    },
+    approved : {
+        type: Boolean
     }
 });
