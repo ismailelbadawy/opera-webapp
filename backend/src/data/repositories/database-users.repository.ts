@@ -65,7 +65,42 @@ export class DatabaseUsersRepository implements IUsersRepository {
     }
 
     editData(user: User): Promise<User> {
-        throw new Error("Method not implemented.");
+        return new Promise((resolve, reject) => {
+            UserModel.findByIdAndUpdate(user.userId, 
+                {
+                    userName: user.username,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    gender: user.gender,
+                    birthDate: user.birthDate,
+                    city: user.city,
+                    userType: user.userType.valueOf(),
+                    address: user.address
+                },
+                async (err, result) => {
+                    if(err) {
+                        reject(err);
+                        return;
+                    }
+                    let dbUser = new User(
+                        result._id,
+                        result.get('userType'),
+                        result.get('username'),
+                        result.get('firstName'),
+                        result.get('lastName'),
+                        result.get('birthDate'),
+                        result.get('gender'),
+                        result.get('city'),
+                        result.get('email'),
+                        result.get('address'),
+                        null, 
+                        null
+                    );
+                    resolve(dbUser);
+                }
+            );
+        });
     }
 
     approveUser(user: User): Promise<User> {
