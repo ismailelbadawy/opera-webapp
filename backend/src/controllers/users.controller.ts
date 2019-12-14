@@ -97,7 +97,7 @@ class UsersController {
                 request.body.address,
                 null,
                 null,
-                null
+                false
             )
             this.usersRepository.register(user, request.body.password).then((dbResponse) => {
                 return response.status(200).json(dbResponse)
@@ -120,8 +120,8 @@ class UsersController {
             if (!request.body.userId) {
                 return response.status(400).json({ "message": "no userId in body was sent" })
             }
-            let dbResponse = await this.usersRepository.removeUser(request.body.userId).then(() => {
-                return response.status(200).json(dbResponse)
+            await this.usersRepository.removeUser(request.body.userId).then(() => {
+                return response.status(200).send();
             }).catch((error) => {
                 console.log(error);
                 return response.status(500).json(error);

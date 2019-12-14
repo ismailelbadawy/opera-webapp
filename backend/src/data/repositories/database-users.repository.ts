@@ -46,9 +46,9 @@ export class DatabaseUsersRepository implements IUsersRepository {
                     passwordSalt: passwordObject.passwordSalt,
                     userType: user.userType.valueOf(),
                     address: user.address,
-                    approved : false
+                    approved: false
                 });
-            }catch(e) {
+            } catch (e) {
                 console.log(e);
             }
             UserModel.insertMany([
@@ -67,7 +67,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     editData(user: User): Promise<User> {
         return new Promise((resolve, reject) => {
-            UserModel.findByIdAndUpdate(user.userId, 
+            UserModel.findByIdAndUpdate(user.userId,
                 {
                     userName: user.username,
                     email: user.email,
@@ -79,7 +79,11 @@ export class DatabaseUsersRepository implements IUsersRepository {
                     address: user.address
                 },
                 async (err, result) => {
-                    if(err) {
+                    if (result == null) {
+                        reject({ error: 'user not found' });
+                        return;
+                    }
+                    if (err) {
                         reject(err);
                         return;
                     }
@@ -94,7 +98,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
                         result.get('city'),
                         result.get('email'),
                         result.get('address'),
-                        null, 
+                        null,
                         null,
                         result.get('approved')
                     );
@@ -106,31 +110,42 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     approveUser(user: User): Promise<User> {
         return new Promise((resolve, reject) => {
-            UserModel.findByIdAndUpdate(user.userId, 
+            UserModel.findByIdAndUpdate(user.userId,
                 {
                     approved : true
                 },
                 async (err, result) => {
-                    if(err) {
+                    if (result == null) {
+                        reject({ error: 'user not found' });
+                        return;
+                    }
+                    if (err) {
                         reject(err);
                         return;
                     }
-                    let dbUser = new User(
-                        result._id,
-                        result.get('userType'),
-                        result.get('username'),
-                        result.get('firstName'),
-                        result.get('lastName'),
-                        result.get('birthDate'),
-                        result.get('gender'),
-                        result.get('city'),
-                        result.get('email'),
-                        result.get('address'),
-                        null, 
-                        null,
-                        result.get('approved')
-                    );
-                    resolve(dbUser);
+                    await UserModel.findOne({ _id: result.get('_id') }).exec((err, resultFinal) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        let dbUser = new User(
+                            resultFinal._id,
+                            resultFinal.get('userType'),
+                            resultFinal.get('username'),
+                            resultFinal.get('firstName'),
+                            resultFinal.get('lastName'),
+                            resultFinal.get('birthDate'),
+                            resultFinal.get('gender'),
+                            resultFinal.get('city'),
+                            resultFinal.get('email'),
+                            resultFinal.get('address'),
+                            null,
+                            null,
+                            resultFinal.get('approved')
+                        );
+                        resolve(dbUser);
+                    })
+
                 }
             );
         });
@@ -138,8 +153,9 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     removeUser(userId: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            let query = UserModel.remove({ _id : userId}, (err) => reject(err));
+            let query = UserModel.remove({ _id: userId }, (err) => reject(err));
             query.then((value) => {
+                
                 resolve(value.deletedCount != 0);
             });
         });
@@ -147,31 +163,42 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     changeUserType(userId: string, usertype: UserType): Promise<User> {
         return new Promise((resolve, reject) => {
-            UserModel.findByIdAndUpdate(userId, 
+            UserModel.findByIdAndUpdate(userId,
                 {
                     userType: usertype.valueOf(),
                 },
                 async (err, result) => {
-                    if(err) {
+                    if (result == null) {
+                        reject({ error: 'user not found' });
+                        return;
+                    }
+                    if (err) {
                         reject(err);
                         return;
                     }
-                    let dbUser = new User(
-                        result._id,
-                        result.get('userType'),
-                        result.get('username'),
-                        result.get('firstName'),
-                        result.get('lastName'),
-                        result.get('birthDate'),
-                        result.get('gender'),
-                        result.get('city'),
-                        result.get('email'),
-                        result.get('address'),
-                        null, 
-                        null,
-                        result.get('approved')
-                    );
-                    resolve(dbUser);
+                    await UserModel.findOne({ _id: result.get('_id') }).exec((err, resultFinal) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        let dbUser = new User(
+                            resultFinal._id,
+                            resultFinal.get('userType'),
+                            resultFinal.get('username'),
+                            resultFinal.get('firstName'),
+                            resultFinal.get('lastName'),
+                            resultFinal.get('birthDate'),
+                            resultFinal.get('gender'),
+                            resultFinal.get('city'),
+                            resultFinal.get('email'),
+                            resultFinal.get('address'),
+                            null,
+                            null,
+                            resultFinal.get('approved')
+                        );
+                        resolve(dbUser);
+                    })
+
                 }
             );
         });
