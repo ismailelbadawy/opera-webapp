@@ -2,7 +2,7 @@ import { genSaltSync, hashSync, compareSync } from "bcryptjs";
 
 export class PasswordSecurer {
     securePassword(rawPassword: string): Password {
-        let salt = genSaltSync(24);
+        let salt = genSaltSync(11);
         let hash = hashSync(rawPassword, salt);
         return new Password(salt, hash);
     }

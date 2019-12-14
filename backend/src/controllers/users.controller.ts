@@ -40,7 +40,7 @@ class UsersController {
                 return response.status(200).json(user);
             }).catch((error) => {
                 console.log(error);
-                return response.status(500).json(error);
+                return response.status(401).json(error);
             }))
         } catch (error) {
             console.log(error);
@@ -73,16 +73,17 @@ class UsersController {
             if (!request.body.email) {
                 return response.status(400).json({ "message": "no email in body was sent" })
             }
-            if (!request.body.address) {
-                return response.status(400).json({ "message": "no address in body was sent" })
-            }
+            // Address is optional.
+            // if (!request.body.address) {
+            //     return response.status(400).json({ "message": "no address in body was sent" })
+            // }
             if (!request.body.birthDate) {
                 return response.status(400).json({ "message": "no birthDate in body was sent" })
             }
             if (!request.body.password) {
                 return response.status(400).json({ "message": "no password in body was sent" })
             }
-
+            
             let user = new User(
                 null,
                 request.body.userType,
@@ -97,8 +98,7 @@ class UsersController {
                 null,
                 null
             )
-
-            let dbResponse = this.usersRepository.register(user, request.body.password).then(() => {
+            this.usersRepository.register(user, request.body.password).then((dbResponse) => {
                 return response.status(200).json(dbResponse)
             }).catch((error) => {
                 console.log(error);

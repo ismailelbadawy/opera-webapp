@@ -1,5 +1,5 @@
-import { IReservationsRepository } from 'shared/repository-base/reservations.repository';
-import { Reservation } from 'shared/domain/reservation.model';
+import { IReservationsRepository } from '../../../../shared/repository-base/reservations.repository'
+import { Reservation } from '../../../../shared/domain/reservation.model';
 
 export class DatabaseReservationsrepository extends IReservationsRepository{
     makeReservation(tickets:Reservation[]): Promise<Reservation[]> {

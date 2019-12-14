@@ -1,6 +1,7 @@
 import express = require('express');
 import * as bodyParser from 'body-parser';
 import { Request, Response } from 'express-serve-static-core';
+import mongoose = require('mongoose');
 import * as path from 'path';
 
 const allowedExt = [
@@ -19,6 +20,8 @@ const allowedExt = [
 class App {
     public app: express.Application;
     public port: number;
+
+    public mongoUrl : string = "mongodb://localhost:27017/operadb";
 
     constructor(controllers: any[], port: number) {
         this.app = express();
@@ -42,7 +45,8 @@ class App {
     }
 
     private mongoSetup(): void {
-        
+        mongoose.Promise = global.Promise;
+        mongoose.connect(this.mongoUrl);
     }
 
     private serveAngular(): void {

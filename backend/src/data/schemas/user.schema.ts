@@ -1,11 +1,6 @@
 import { Schema } from "mongoose";
 
 export const UserSchema: Schema = new Schema({
-    userId: {
-        type: String,
-        required: 'A user must have an id',
-        index: true
-    },
     userName: {
         type: String,
         index: true

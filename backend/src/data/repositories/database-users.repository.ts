@@ -1,8 +1,10 @@
-import { IUsersRepository } from 'shared/repository-base/users.repository';
+import { model } from 'mongoose';
+
+import { IUsersRepository } from '../../../../shared/repository-base/users.repository';
+import { PasswordSecurer, Password } from '../utility/password.generator';
+
 import { User, UserType } from "../../../../shared/domain/user.model";
 import { UserSchema } from '../schemas/user.schema';
-import { model } from 'mongoose';
-import { PasswordSecurer, Password } from '../utility/password.generator';
 
 var mongoose = require('mongoose');
 
@@ -18,7 +20,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
                 let isCorrect = new PasswordSecurer().comparePassword(password, new Password(value.password.passwordSalt, value.password.passwordSalt));
                 if (isCorrect) {
                     resolve(new User(value._id, value.userType, value.userName, value.firstName, value.lastName, value.birthDate, value.gender, value.city, value.email, value.address, null, null));
-                }else {
+                } else {
                     reject('Passwords do not match');
                 }
             }).catch((err) => {
@@ -29,22 +31,25 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     register(user: User, password: string): Promise<User> {
         return new Promise((resolve, reject) => {
-            let passwordObject = new PasswordSecurer().securePassword(password);
-            var userToInsert = new UserModel({
-                userName: user.username,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                gender: user.gender,
-                birthDate: user.birthDate,
-                city: user.city,
-                password: {
+            console.log('Started')
+            let passwordObject = (new PasswordSecurer().securePassword(password));
+            try {
+                var userToInsert = new UserModel({
+                    userName: user.username,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    gender: user.gender,
+                    birthDate: user.birthDate,
+                    city: user.city,
                     passwordHash: passwordObject.passwordHash,
-                    passwordSalt: passwordObject.passwordSalt
-                },
-                userType: user.userType.valueOf(),
-                address: user.address
-            });
+                    passwordSalt: passwordObject.passwordSalt,
+                    userType: user.userType.valueOf(),
+                    address: user.address
+                });
+            }catch(e) {
+                console.log(e);
+            }
             UserModel.insertMany([
                 userToInsert
             ], (err, result) => {
