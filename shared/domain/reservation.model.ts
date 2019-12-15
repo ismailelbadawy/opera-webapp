@@ -1,16 +1,6 @@
+import { Seat } from "./event.model";
 export class Reservation {
-    public get pinNumber(): string | null {
-        return this._pinNumber;
-    }
-    public set pinNumber(value: string | null) {
-        this._pinNumber = value;
-    }
-    public get cardNumber(): string | null {
-        return this._cardNumber;
-    }
-    public set cardNumber(value: string | null) {
-        this._cardNumber = value;
-    }
+    
     public get seat(): Seat | null {
         return this._seat;
     }
@@ -39,20 +29,8 @@ export class Reservation {
         private _ticketId: string | null,
         private _eventId: string | null,
         private _userId: string | null,
-        private _seat: Seat | null,
-        private _cardNumber: string | null,
-        private _pinNumber: string | null
+        private _seat: Seat | null
     ) {
 
     }
-}
-
-export class Seat{
-    constructor(
-        private _row : number | null,
-        private _column: number | null,
-        private _available : boolean | null
-        ){
-
-        }
 }

@@ -1,16 +1,15 @@
 import { IEventsRepository } from '../../../../shared/repository-base/events.repository';
-import { Event } from '../../../../shared/domain/event.model';
+import { Event, Seat } from '../../../../shared/domain/event.model';
 import { EventSchema } from '../schemas/event.schema';
 import { model } from 'mongoose';
-import { Seat } from "../../../../shared/domain/reservation.model";
 import { HallSchema } from '../schemas/hall.schema';
 import { ObjectID } from "bson"
 import { Hall } from '../../../../shared/domain/hall.model';
+import { Halls } from "./database-halls.repository";
 
 var mongoose = require('mongoose');
 
 const Events = model('events', EventSchema);
-const Halls = model('halls', HallSchema);
 
 mongoose.connection;
 
@@ -25,17 +24,35 @@ export class DatabaseEventsRepository implements IEventsRepository {
                 if(hall == undefined || hall == null) {
                     reject({error: 'hall not found'});
                 }
+                let seats = [];
+                for (let i = 0; i < hall.get('hallWidth'); i++) {
+                    for(let j = 0; j < hall.get('hallWidth'); j++) {
+                        seats.push({
+                            row : i,
+                            column : j,
+                            isAvailable : true
+                        });
+                    }
+                }
                 Events.create({
                     eventName:event.eventName,
                     description:event.description,
                     posterUrl:event.posterUrl,
                     startsAt:event.startsAt,
-                    hallReference : hall._id
+                    hallReference : hall._id,
+                    seats : seats
                 }).then((value) => {
                     if (value == null) {
                         reject('failed to create');
                     } else {
-                        resolve(new Event(value._id, value.get('eventName'), value.get('description'),value.get('posterUrl'),value.get('startsAt'), new Hall(hall._id, hall.get('hallName'), hall.get('hallWidth'))));
+                        resolve(
+                            new Event(value._id, 
+                                value.get('eventName'), 
+                                value.get('description'), 
+                                value.get('posterUrl'), 
+                                value.get('startsAt'), 
+                                new Hall(hall._id, hall.get('hallName'), hall.get('hallWidth')), 
+                                seats.map(x => new Seat(x.row, x.column, x.isAvailable))));
                     }
                 }).catch((err) => {
                     reject(err);
@@ -84,7 +101,7 @@ export class DatabaseEventsRepository implements IEventsRepository {
                         reject(err);
                     }else{
                         let hall = await Halls.findOne({ _id : value.get('hallReference')}).exec();
-                        resolve(new Event(value._id, value.get('eventName'), value.get('description'),value.get('posterUrl'),value.get('startsAt'), new Hall(hall._id, hall.get('hallName'), hall.get('hallWidth'))));
+                        resolve(new Event(value._id, value.get('eventName'), value.get('description'),value.get('posterUrl'),value.get('startsAt'), new Hall(hall._id, hall.get('hallName'), hall.get('hallWidth')), value.get('seats').map(s => new Seat(s.row, s.column, s.isAvailable))));
                     }
                 })
             }catch(e) {
@@ -100,7 +117,8 @@ export class DatabaseEventsRepository implements IEventsRepository {
                         reject(err);
                     } else {
                         console.log(result);
-                        let events = result.map(s => new Event(s._id, s.get('eventName'), s.get('description'),s.get('posterUrl'),s.get('startsAt'),s.get('hallId')));
+                        
+                        let events = result.map(s => new Event(s._id, s.get('eventName'), s.get('description'),s.get('posterUrl'),s.get('startsAt'), null, s.get('seats').map(z => new Seat(z.row, z.column, z.isAvailable))));
                         resolve(events);
                     }
                 });

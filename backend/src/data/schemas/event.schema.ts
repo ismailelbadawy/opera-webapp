@@ -1,6 +1,18 @@
 import { Schema } from "mongoose";
 import { ObjectID } from 'bson';
 
+const SeatSchema = new Schema({
+    row : {
+        type : Number
+    },
+    column : {
+        type : Number
+    },
+    isAvailable: {
+        type : Boolean
+    }
+}, { _id : false})
+
 export const EventSchema = new Schema({
     eventName : {
         type : String,
@@ -18,5 +30,6 @@ export const EventSchema = new Schema({
     },
     hallReference : {
         type: ObjectID
-    }
+    },
+    seats : [SeatSchema]
 });

@@ -6,7 +6,7 @@ import { model } from 'mongoose';
 
 var mongoose = require('mongoose');
 
-const Halls = model('halls', HallSchema);
+export const Halls = model('halls', HallSchema);
 
 mongoose.connection;
 

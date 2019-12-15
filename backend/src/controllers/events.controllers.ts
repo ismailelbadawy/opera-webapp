@@ -67,7 +67,7 @@ class EventsController {
                 request.body.description,
                 request.body.posterUrl,
                 request.body.startsAt,
-                new Hall(request.body.hallId, null, null))
+                new Hall(request.body.hallId, null, null), null)
             this.eventsRepository.createEvent(event).then((dbResponse) => {
                 return response.status(200).json(dbResponse);
             }).catch((error) => {
@@ -95,7 +95,7 @@ class EventsController {
                 request.body.description,
                 request.body.posterUrl,
                 request.body.startsAt,
-                new Hall(null, null, null))
+                new Hall(null, null, null), [])
             this.eventsRepository.editEvent(event).then((dbResponse) => {
                 return response.status(200).json(dbResponse);
             }).catch((error) => {
@@ -144,6 +144,5 @@ class EventsController {
         }
     }
 }
-import { from } from 'rxjs';
 
 export default EventsController;
