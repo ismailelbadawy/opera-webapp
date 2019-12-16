@@ -1,6 +1,7 @@
 import { Hall } from './hall.model';
 
 export class Event {
+    
     public get eventId(): string | null {
         return this._eventId;
     }
@@ -43,6 +44,13 @@ export class Event {
         this._hall = value;
     }
 
+    public get seats(): Seat[] | null {
+        return this._seats;
+    }
+    public set seats(value: Seat[] | null) {
+        this._seats = value;
+    }
+
     constructor(
         private _eventId: string | null,
         private _eventName: string | null,
@@ -50,13 +58,31 @@ export class Event {
         private _posterUrl: string | null,
         private _startsAt: Date | null,
         private _hall: Hall | null,
-        private _seats : Seat[] | null
+        private _seats: Seat[] | null
     ) {
 
     }
 }
 
 export class Seat {
+    public get available(): boolean | null {
+        return this._available;
+    }
+    public set available(value: boolean | null) {
+        this._available = value;
+    }
+    public get column(): number | null {
+        return this._column;
+    }
+    public set column(value: number | null) {
+        this._column = value;
+    }
+    public get row(): number | null {
+        return this._row;
+    }
+    public set row(value: number | null) {
+        this._row = value;
+    }
     constructor(
         private _row: number | null,
         private _column: number | null,

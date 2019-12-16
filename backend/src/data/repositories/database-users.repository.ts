@@ -6,6 +6,8 @@ import { PasswordSecurer, Password } from '../utility/password.generator';
 import { User, UserType } from "../../../../shared/domain/user.model";
 import { UserSchema } from '../schemas/user.schema';
 
+import { sign } from "jsonwebtoken";
+
 var mongoose = require('mongoose');
 
 const UserModel = model('user', UserSchema);
@@ -16,15 +18,23 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     login(username: string, password: string): Promise<User> {
         return new Promise((resolve, reject) => {
-            UserModel.findOne({ userName: username }).then((value: any) => {
-                let isCorrect = new PasswordSecurer().comparePassword(password, new Password(value.password.passwordSalt, value.password.passwordSalt));
-                if (isCorrect) {
-                    resolve(new User(value._id, value.userType, value.userName, value.firstName, value.lastName, value.birthDate, value.gender, value.city, value.email, value.address, null, null, value.approved));
+            UserModel.findOne({ userName : username }).then((value: any) => {
+                let securer = new PasswordSecurer();
+                let isCorrect = securer.comparePassword(password, new Password(value.passwordSalt, value.passwordHash));
+                console.log(`Password ${password} and Password Hash : ${value.passwordHash}, Password Salt : ${value.passwordSalt}`);
+                if (isCorrect) {                    
+                    let token = sign({
+                        userId : value._id,
+                        timestamp : new Date().getTime(),
+                        userType : value.userType,
+                        userEmail : value.email
+                    }, "ISMAILELBADAAWYANDISMAILHELMYCORPSECRETS");
+                    resolve(new User(value._id, value.userType, value.userName, value.firstName, value.lastName, value.birthDate, value.gender, value.city, value.email, value.address, null, null, value.approved, token));
                 } else {
                     reject('Passwords do not match');
                 }
             }).catch((err) => {
-                reject('Username not found');
+                reject({error: 'Username and password do not match'});
             });
         });
     }
@@ -33,6 +43,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
         return new Promise((resolve, reject) => {
             console.log('Started')
             let passwordObject = (new PasswordSecurer().securePassword(password));
+            console.log(`Password is ${password}, Password Hash : ${passwordObject.passwordHash}, Password Salt : ${passwordObject.passwordSalt}`);
             try {
                 var userToInsert = new UserModel({
                     userName: user.username,
@@ -100,7 +111,8 @@ export class DatabaseUsersRepository implements IUsersRepository {
                         result.get('address'),
                         null,
                         null,
-                        result.get('approved')
+                        result.get('approved'),
+                        null
                     );
                     resolve(dbUser);
                 }
@@ -141,7 +153,8 @@ export class DatabaseUsersRepository implements IUsersRepository {
                             resultFinal.get('address'),
                             null,
                             null,
-                            resultFinal.get('approved')
+                            resultFinal.get('approved'),
+                            null
                         );
                         resolve(dbUser);
                     })
@@ -194,7 +207,8 @@ export class DatabaseUsersRepository implements IUsersRepository {
                             resultFinal.get('address'),
                             null,
                             null,
-                            resultFinal.get('approved')
+                            resultFinal.get('approved'),
+                            null
                         );
                         resolve(dbUser);
                     })
@@ -211,7 +225,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
                     reject(err);
                     return;
                 }
-                let users = res.map(s => new User(s._id,null, null, null, null, null, null, null, null, null, null, null, false));
+                let users = res.map(s => new User(s._id,null, null, null, null, null, null, null, null, null, null, null, false, null));
                 resolve(users);
             });
         });

@@ -1,4 +1,16 @@
 export class User {
+    public get token(): string | null {
+        return this._token;
+    }
+    public set token(value: string | null) {
+        this._token = value;
+    }
+    public get approved(): boolean | null {
+        return this._approved;
+    }
+    public set approved(value: boolean | null) {
+        this._approved = value;
+    }
     public get paswordSalt(): string | null {
         return this._paswordSalt;
     }
@@ -71,26 +83,27 @@ export class User {
     public set userId(value: string) {
         this._userId = value;
     }
-   constructor(
-       private _userId: string|null,
-       private _userType: UserType,
-       private _username: string,
-       private _firstName: string | null,
-       private _lastName: string | null,
-       private _birthDate: string | null,
-       private _gender: string | null,
-       private _city: string | null,
-       private _email: string,
-       private _address: string | null,
-       private _passwordHash: string | null,
-       private _paswordSalt: string | null,
-       private _approved : boolean | null
-       ){
+    constructor(
+        private _userId: string | null,
+        private _userType: UserType,
+        private _username: string,
+        private _firstName: string | null,
+        private _lastName: string | null,
+        private _birthDate: string | null,
+        private _gender: string | null,
+        private _city: string | null,
+        private _email: string,
+        private _address: string | null,
+        private _passwordHash: string | null,
+        private _paswordSalt: string | null,
+        private _approved: boolean | null,
+        private _token: string | null
+    ) {
 
-   } 
+    }
 }
 
-export enum UserType{
+export enum UserType {
     ADMIN,
     CUSTOMER,
     MANAGER

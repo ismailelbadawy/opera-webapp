@@ -1,5 +1,4 @@
-import { Event } from 'shared/domain/event.model';
-import { Seat } from 'shared/domain/reservation.model';
+import { Event, Seat } from '../domain/event.model';
 
 export abstract class IEventsRepository{
     
@@ -8,5 +7,5 @@ export abstract class IEventsRepository{
     abstract uploadPosterUrl(eventId: string, posterUrl : string) : Promise<boolean>;
     abstract editEvent(event:Event):Promise<Event>;
     abstract viewAvailableEvents():Promise<Event[]>;
-    abstract getSeatsFroEvent() : Promise<Seat[][]>;
+    abstract getSeatsForEvent(eventId : string) : Promise<Seat[]>;
 }

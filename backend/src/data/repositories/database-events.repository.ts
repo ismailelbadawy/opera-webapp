@@ -14,9 +14,20 @@ const Events = model('events', EventSchema);
 mongoose.connection;
 
 export class DatabaseEventsRepository implements IEventsRepository {
-    getSeatsFroEvent(): Promise<Seat[][]> {
-        throw new Error("Method not implemented.");
+    
+    getSeatsForEvent(eventId : string): Promise<Seat[]> {
+        return new Promise(async (resolve, reject) => {
+            try{
+                let eventDb = await Events.findOne({ _id : eventId}).exec();
+                let event = new Event(eventDb.get('_id'), eventDb.get('eventName'), eventDb.get('description'), eventDb.get('posterUrl'), eventDb.get('startsAt'), null, eventDb.get('seats').map(s => new Seat(s.get('row'), s.get('column'), s.get('isAvailable'))));
+                let seats = event.seats.filter(x => x.available);
+                resolve(seats);
+            }catch(e) {
+                reject(e);
+            }
+        });
     }
+
     createEvent(event: Event): Promise<Event> {
         return new Promise(async (resolve, reject) =>  {
             try {

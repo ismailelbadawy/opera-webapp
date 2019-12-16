@@ -18,6 +18,7 @@ class EventsController {
         this.router.put(this.path, this.editEvent);
         this.router.put(this.path + '/upload-poster', this.uploadPosterUrl);
         this.router.delete(this.path, this.cancelEvent);
+        this.router.get(this.path + '/seats', this.getAvailableEvents);
     }
 
     uploadPosterUrl = async (request: express.Request, response: express.Response) => {
@@ -141,6 +142,21 @@ class EventsController {
         } catch (error) {
             console.log(error);
             return response.status(500).json(error);
+        }
+    }
+
+    getAvailableEvents = async (request : express.Request, response: express.Response) => {
+        try{
+            let eventId = request.body.eventId;
+
+            this.eventsRepository.getSeatsForEvent(eventId).then((seats) => {
+                return response.status(200).json(seats);
+            }).catch((error : Error) => {
+                console.log(error);
+                return response.status(400).json(error);
+            })
+        }catch(e) {
+            return response.status(500).json(e);
         }
     }
 }

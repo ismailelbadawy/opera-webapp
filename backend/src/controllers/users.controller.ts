@@ -15,7 +15,7 @@ class UsersController {
         this.initializeRoutes();
     }
     public initializeRoutes() {
-        this.router.get(this.path + '/login', this.login);
+        this.router.post(this.path + '/login', this.login);
         this.router.post(this.path, this.register);
         this.router.delete(this.path, this.removeUser);
         this.router.put(this.path, this.editUser);
@@ -35,12 +35,12 @@ class UsersController {
             if (!request.body.password) {
                 return response.status(400).json({ "message": "no password in body was sent" })
             }
-            let user = this.usersRepository.login(request.body.username, request.body.password.then(() => {
+            this.usersRepository.login(request.body.username, request.body.password).then((user) => {
                 return response.status(200).json(user);
             }).catch((error) => {
                 console.log(error);
                 return response.status(401).json(error);
-            }))
+            });
         } catch (error) {
             console.log(error);
             return response.status(500).json(error);
@@ -96,7 +96,8 @@ class UsersController {
                 request.body.address,
                 null,
                 null,
-                false
+                false,
+                null
             )
             this.usersRepository.register(user, request.body.password).then((dbResponse) => {
                 return response.status(200).json(dbResponse)
@@ -138,6 +139,7 @@ class UsersController {
             }
             let user = new User(
                 request.body.userId,
+                null,
                 null,
                 null,
                 null,
@@ -204,6 +206,7 @@ class UsersController {
                 request.body.city,
                 request.body.email,
                 request.body.address,
+                null,
                 null,
                 null,
                 null
