@@ -9,7 +9,7 @@ import { Halls } from "./database-halls.repository";
 
 var mongoose = require('mongoose');
 
-const Events = model('events', EventSchema);
+export const Events = model('events', EventSchema);
 
 mongoose.connection;
 

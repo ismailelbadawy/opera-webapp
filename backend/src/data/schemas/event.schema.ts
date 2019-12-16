@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 import { ObjectID } from 'bson';
 
-const SeatSchema = new Schema({
+export const SeatSchema = new Schema({
     row : {
         type : Number
     },

@@ -10,7 +10,7 @@ import { sign } from "jsonwebtoken";
 
 var mongoose = require('mongoose');
 
-const UserModel = model('user', UserSchema);
+export const UserModel = model('user', UserSchema);
 
 mongoose.connection;
 

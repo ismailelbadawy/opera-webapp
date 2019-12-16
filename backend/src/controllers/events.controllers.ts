@@ -8,7 +8,6 @@ class EventsController {
     public router = express.Router();
 
     constructor(private eventsRepository: IEventsRepository) {
-        eventsRepository = new DatabaseEventsRepository();
         this.intializeRoutes();
     }
 
@@ -32,7 +31,7 @@ class EventsController {
             if (!request.body.posterUrl) {
                 return response.status(400).json({ "message": "no posterUrl in body was sent" })
             }
-            let res = this.eventsRepository.uploadPosterUrl(request.body.eventId, request.body.posterUrl).then(() => {
+            this.eventsRepository.uploadPosterUrl(request.body.eventId, request.body.posterUrl).then((res) => {
                 return response.status(200).json(res);
             }).catch((error) => {
                 console.log(error);
