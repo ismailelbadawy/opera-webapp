@@ -9,11 +9,16 @@ import { MatInputModule, MatButtonModule } from "@angular/material";
 import { ReactiveFormsModule } from "@angular/forms";
 import { IUsersRepository } from '../../../shared/repository-base/users.repository';
 import { WebUsersRepository } from '../repositories/users.repository';
+import { RegisterComponent } from './register/register.component';
+import { MatDatepickerModule } from "@angular/material";
+import {MatNativeDateModule} from '@angular/material';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +26,9 @@ import { WebUsersRepository } from '../repositories/users.repository';
     BrowserAnimationsModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     {
