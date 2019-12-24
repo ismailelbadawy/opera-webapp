@@ -1,0 +1,17 @@
+<div class="my-container">
+  <div class="form-container">
+    <img class="form-logo" src="../../assets/logo-cairo-opera.png" />
+    <p class="wlcm-text">Welcome to Cairo Opera House web portal, you are steps away from being able to reserve your favorite show. </p>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Username" value="" [formControl]='usernameFormControl'>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Password" type="password" [formControl]="passwordFormControl">
+    </mat-form-field>
+    
+    <button *ngIf="!isLoading" (click)='tryLogin();' class="example-full-width" mat-button>Login</button>
+    <div *ngIf="hasError" id="login-error" class="error-text">
+      <p>Login failed try again.</p>
+    </div>
+  </div>
+</div>
