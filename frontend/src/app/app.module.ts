@@ -9,11 +9,16 @@ import { MatInputModule, MatButtonModule } from "@angular/material";
 import { ReactiveFormsModule } from "@angular/forms";
 import { IUsersRepository } from '../../../shared/repository-base/users.repository';
 import { WebUsersRepository } from '../repositories/users.repository';
+import { CreateHallComponent } from './create-hall/create-hall.component';
+import { WebHallsRepository } from '../repositories/halls.repository';
+import { IHallsRepository } from '../../../shared/repository-base/halls.repository';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    CreateHallComponent
   ],
   imports: [
     BrowserModule,
@@ -21,12 +26,17 @@ import { WebUsersRepository } from '../repositories/users.repository';
     BrowserAnimationsModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     {
       provide: IUsersRepository,
       useClass : WebUsersRepository
+    },
+    {
+      provide : IHallsRepository,
+      useClass : WebHallsRepository
     }
   ],
   bootstrap: [AppComponent]

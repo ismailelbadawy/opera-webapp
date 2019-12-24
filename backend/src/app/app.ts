@@ -21,7 +21,7 @@ class App {
     public app: express.Application;
     public port: number;
 
-    public mongoUrl : string = "mongodb://localhost:27017/operadb";
+    public mongoUrl : string = "mongodb://hammam:hammam12345@ds343985.mlab.com:43985/operadb";
 
     constructor(controllers: any[], port: number) {
         this.app = express();
@@ -57,9 +57,9 @@ class App {
     private serveAngular(): void {
         this.app.get('*', (req: Request, res: Response) => {
             if (allowedExt.filter(ext => req.url.indexOf(ext) > 0).length > 0) {
-                res.sendFile(path.resolve(`dist/icteam/${req.url}`));
+                res.sendFile(path.resolve(`dist/opera-webapp/${req.url}`));
             } else {
-                res.sendFile(path.resolve('dist/icteam/index.html'));
+                res.sendFile(path.resolve('dist/opera-webapp/index.html'));
             }
         });
     }
