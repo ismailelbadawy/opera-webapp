@@ -9,10 +9,13 @@ import { MatInputModule, MatButtonModule, MatCheckboxModule, MAT_CHECKBOX_CLICK_
 import { ReactiveFormsModule } from "@angular/forms";
 import { IUsersRepository } from '../../../shared/repository-base/users.repository';
 import { WebUsersRepository } from '../repositories/users.repository';
+import { RegisterComponent } from './register/register.component';
+import { MatDatepickerModule } from "@angular/material";
+import {MatNativeDateModule} from '@angular/material';
+
 import { ViewUsersComponent } from './view-users/view-users.component';
 import { IcteamNavbarComponent } from './icteam-navbar/icteam-navbar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,8 @@ import { RegisterComponent } from './register/register.component';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     HttpClientModule,
     MatSelectModule
   ],
