@@ -1,5 +1,4 @@
 import { Hall } from 'shared/domain/hall.model';
-import { Seat } from 'shared/domain/reservation.model';
 
 export abstract class IHallsRepository{
 
