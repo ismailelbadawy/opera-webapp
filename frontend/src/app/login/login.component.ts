@@ -45,8 +45,7 @@ export class LoginComponent implements OnInit {
     this.hideError();
     this.isLoading = true;
     try{
-      let response = await this._repo.login(this.usernameFormControl.value, this.passwordFormControl.value)
-      
+      let response = await this._repo.login(this.usernameFormControl.value, this.passwordFormControl.value);
     }catch(e) {
       this.showError();
     }finally {

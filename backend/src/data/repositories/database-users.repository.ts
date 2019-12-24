@@ -15,6 +15,9 @@ export const UserModel = model('user', UserSchema);
 mongoose.connection;
 
 export class DatabaseUsersRepository implements IUsersRepository {
+    getUserInfo(): Promise<User> {
+        throw new Error("Method not implemented.");
+    }
 
     login(username: string, password: string): Promise<User> {
         return new Promise((resolve, reject) => {

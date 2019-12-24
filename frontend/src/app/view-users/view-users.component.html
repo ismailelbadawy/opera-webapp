@@ -2,7 +2,7 @@
 <ul>
     <div *ngFor="let item of unapproved">
         <mat-checkbox (click)='approveUser(item._userId);' class="float-left">{{item._username}} with id :
-            {{item._userId}}</mat-checkbox>
+            <strong>{{item._userId}}</strong></mat-checkbox>
     </div>
 
 </ul>
@@ -10,7 +10,7 @@
 <ul>
     <div *ngFor="let item of approved">
         <div>
-            <p>{{item._username}} with id : {{item._userId}} with type : {{getTypeName(item._userType)}}<mat-form-field class="padding-row-16px">
+            <p>{{item._username}} with id : <strong>{{item._userId}}</strong> with type : {{getTypeName(item._userType)}}<mat-form-field class="padding-row-16px">
                     <mat-label>Type</mat-label>
                     <mat-select>
                         <mat-option (onSelectionChange)='changeUserType(item._userId, type.value)' *ngFor="let type of types" [value]='type.value'>
