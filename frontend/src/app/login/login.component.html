@@ -10,6 +10,7 @@
     </mat-form-field>
     
     <button *ngIf="!isLoading" (click)='tryLogin();' class="example-full-width" mat-button>Login</button>
+    <a href="/register">Or Create a new account</a>
     <div *ngIf="hasError" id="login-error" class="error-text">
       <p>Login failed try again.</p>
     </div>
