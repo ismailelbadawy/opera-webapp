@@ -14,55 +14,55 @@ export const Events = model('events', EventSchema);
 mongoose.connection;
 
 export class DatabaseEventsRepository implements IEventsRepository {
-    
-    getSeatsForEvent(eventId : string): Promise<Seat[]> {
+
+    getSeatsForEvent(eventId: string): Promise<Seat[]> {
         return new Promise(async (resolve, reject) => {
-            try{
-                let eventDb = await Events.findOne({ _id : eventId}).exec();
+            try {
+                let eventDb = await Events.findOne({ _id: eventId }).exec();
                 let event = new Event(eventDb.get('_id'), eventDb.get('eventName'), eventDb.get('description'), eventDb.get('posterUrl'), eventDb.get('startsAt'), null, eventDb.get('seats').map(s => new Seat(s.get('row'), s.get('column'), s.get('isAvailable'))));
                 let seats = event.seats.filter(x => x.available);
                 resolve(seats);
-            }catch(e) {
+            } catch (e) {
                 reject(e);
             }
         });
     }
 
     createEvent(event: Event): Promise<Event> {
-        return new Promise(async (resolve, reject) =>  {
+        return new Promise(async (resolve, reject) => {
             try {
-                let hall = await Halls.findOne({ _id : event.hall.hallId}).exec();
-                if(hall == undefined || hall == null) {
-                    reject({error: 'hall not found'});
+                let hall = await Halls.findOne({ _id: event.hall.hallId }).exec();
+                if (hall == undefined || hall == null) {
+                    reject({ error: 'hall not found' });
                 }
                 let seats = [];
                 for (let i = 0; i < hall.get('hallWidth'); i++) {
-                    for(let j = 0; j < hall.get('hallWidth'); j++) {
+                    for (let j = 0; j < hall.get('hallWidth'); j++) {
                         seats.push({
-                            row : i,
-                            column : j,
-                            isAvailable : true
+                            row: i,
+                            column: j,
+                            isAvailable: true
                         });
                     }
                 }
                 Events.create({
-                    eventName:event.eventName,
-                    description:event.description,
-                    posterUrl:event.posterUrl,
-                    startsAt:event.startsAt,
-                    hallReference : hall._id,
-                    seats : seats
+                    eventName: event.eventName,
+                    description: event.description,
+                    posterUrl: event.posterUrl,
+                    startsAt: event.startsAt,
+                    hallReference: hall._id,
+                    seats: seats
                 }).then((value) => {
                     if (value == null) {
                         reject('failed to create');
                     } else {
                         resolve(
-                            new Event(value._id, 
-                                value.get('eventName'), 
-                                value.get('description'), 
-                                value.get('posterUrl'), 
-                                value.get('startsAt'), 
-                                new Hall(hall._id, hall.get('hallName'), hall.get('hallWidth')), 
+                            new Event(value._id,
+                                value.get('eventName'),
+                                value.get('description'),
+                                value.get('posterUrl'),
+                                value.get('startsAt'),
+                                new Hall(hall._id, hall.get('hallName'), hall.get('hallWidth')),
                                 seats.map(x => new Seat(x.row, x.column, x.isAvailable))));
                     }
                 }).catch((err) => {
@@ -72,50 +72,50 @@ export class DatabaseEventsRepository implements IEventsRepository {
                 reject(e);
             }
         });
-    }    
+    }
     cancelEvent(eventId: string): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
-            try{
-                let count = await Events.deleteOne({ _id : eventId}).exec();
+            try {
+                let count = await Events.deleteOne({ _id: eventId }).exec();
                 resolve(count.deletedCount != 0);
-            }catch(e) {
+            } catch (e) {
                 reject(e);
             }
         });
     }
     uploadPosterUrl(eventId: string, posterUrl: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            try{
+            try {
                 Events.findByIdAndUpdate(eventId, {
                     posterUrl: posterUrl
                 }, async (err, result) => {
-                    if(err) {
+                    if (err) {
                         reject(err);
-                    }else{
+                    } else {
                         resolve(true);
                     }
                 })
-            }catch(e) {
+            } catch (e) {
                 reject(e)
             }
         });
     }
     editEvent(event: Event): Promise<Event> {
         return new Promise((resolve, reject) => {
-            try{
+            try {
                 Events.findByIdAndUpdate(event.eventId, {
-                    eventName : event.eventName,
-                    description : event.description,
-                    startsAt : event.startsAt
+                    eventName: event.eventName,
+                    description: event.description,
+                    startsAt: event.startsAt
                 }, async (err, value) => {
-                    if(err) {
+                    if (err) {
                         reject(err);
-                    }else{
-                        let hall = await Halls.findOne({ _id : value.get('hallReference')}).exec();
-                        resolve(new Event(value._id, value.get('eventName'), value.get('description'),value.get('posterUrl'),value.get('startsAt'), new Hall(hall._id, hall.get('hallName'), hall.get('hallWidth')), value.get('seats').map(s => new Seat(s.row, s.column, s.isAvailable))));
+                    } else {
+                        let hall = await Halls.findOne({ _id: value.get('hallReference') }).exec();
+                        resolve(new Event(value._id, value.get('eventName'), value.get('description'), value.get('posterUrl'), value.get('startsAt'), new Hall(hall._id, hall.get('hallName'), hall.get('hallWidth')), value.get('seats').map(s => new Seat(s.row, s.column, s.isAvailable))));
                     }
                 })
-            }catch(e) {
+            } catch (e) {
                 reject(e)
             }
         });
@@ -123,11 +123,22 @@ export class DatabaseEventsRepository implements IEventsRepository {
     viewAvailableEvents(): Promise<Event[]> {
         return new Promise((resolve, reject) => {
             try {
-                Events.find({}, (err, result) => {
+                Events.find({}, async (err, result) => {
                     if (err) {
                         reject(err);
                     } else {
-                        let events = result.map(s => new Event(s._id, s.get('eventName'), s.get('description'),s.get('posterUrl'),s.get('startsAt'), null, s.get('seats').map(z => new Seat(z.row, z.column, z.isAvailable))));
+                        let dbHalls = await Halls.find({}).exec();
+                        let halls = dbHalls.map(z => new Hall(z._id, z.get('hallName'), z.get('hallWidth')));
+                        let events = result.map(s => { 
+                            
+                            let hall = halls.find(z => z.hallId == s.get('hallReference').toString());
+                            if(hall != undefined){
+                                return new Event(s._id, s.get('eventName'), s.get('description'), s.get('posterUrl'), s.get('startsAt'), new Hall(hall.hallId, hall.hallName, hall.hallShape), s.get('seats').map(z => new Seat(z.row, z.column, z.isAvailable)));
+                            }else{
+                                return new Event(s._id, s.get('eventName'), s.get('description'), s.get('posterUrl'), s.get('startsAt'), new Hall(s.get('hallReference'), null, null), s.get('seats').map(z => new Seat(z.row, z.column, z.isAvailable)));
+
+                            }
+                        });
                         resolve(events);
                     }
                 });
@@ -137,5 +148,5 @@ export class DatabaseEventsRepository implements IEventsRepository {
         });
     }
 
-    
+
 }
