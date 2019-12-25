@@ -24,6 +24,7 @@ import { IEventsRepository } from '../../../shared/repository-base/events.reposi
 import { WebEventsRepository } from '../repositories/events.repository';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ViewHallsComponent } from './view-halls/view-halls.component';
+import { ReservationsComponent } from './reservations/reservations.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ViewHallsComponent } from './view-halls/view-halls.component';
     RegisterComponent,
     EventsComponent,
     EventDetailsComponent,
-    ViewHallsComponent
+    ViewHallsComponent,
+    ReservationsComponent
   ],
   imports: [
     BrowserModule,
