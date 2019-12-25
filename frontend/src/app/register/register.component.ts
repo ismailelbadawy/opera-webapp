@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
     cityFormControl = new FormControl('', [Validators.required]);
     
     genderFormControl = new FormControl('', [Validators.required]);
-    emailFormControl = new FormControl('', [Validators.required]);
+    emailFormControl = new FormControl('', [Validators.required,Validators.email]);
     birthDateFormControl = new FormControl('',[Validators.required])
     addressFormControl = new FormControl('',[Validators.required])
     isLoading : boolean = false;
@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
         this.addressFormControl.value,null,null,false,null)
         console.log(user)
       let response = await this._repo.register(user, this.passwordFormControl.value)
-      
+      this._router.navigate(['login'])
     }catch(e) {
       this.showError();
     }finally {
