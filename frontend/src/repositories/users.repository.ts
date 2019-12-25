@@ -40,8 +40,25 @@ export class WebUsersRepository implements IUsersRepository {
         throw new Error("Method not implemented.");
     }
 
-    register(user: import("../../../shared/domain/user.model").User, password: string): Promise<import("../../../shared/domain/user.model").User> {
-        throw new Error("Method not implemented.");
+    async register(user: import("../../../shared/domain/user.model").User, password: string): Promise<import("../../../shared/domain/user.model").User> {
+        let b = {
+            username : user.username,
+            email : user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            gender: user.gender,
+            birthDate: user.birthDate,
+            city:user.city,
+            address:user.address,
+            userType:user.userType,
+            password:password
+
+        };
+        console.log(b);
+        let response:any = await this._client.post('/api/users',b  
+        ).toPromise();
+        console.log(response)
+        return response
     }
 
 

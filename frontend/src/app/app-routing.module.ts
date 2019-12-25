@@ -12,6 +12,10 @@ const routes: Routes = [
     component : LoginComponent
   },
   {
+    path : 'register',
+    component : RegisterComponent
+  },
+  {
     path: '',
     component : IcteamNavbarComponent,
     children : [
@@ -24,10 +28,6 @@ const routes: Routes = [
   {
     path: 'createhall',
     component: CreateHallComponent
-  },
-  {
-    path : 'register',
-    component : RegisterComponent
   }
   
 ];

@@ -51,6 +51,7 @@ class UsersController {
             if (!request.body) {
                 return response.status(400).json({ "message": "no body request was sent" })
             }
+            console.log(request.body);
             if (!request.body.username) {
                 return response.status(400).json({ "message": "no username in body was sent" })
             }
