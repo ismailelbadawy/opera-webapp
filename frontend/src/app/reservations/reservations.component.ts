@@ -26,7 +26,6 @@ export class ReservationsComponent implements OnInit {
       let userInfo = await this._usersRepository.getUserInfo();
       let reservation = await this._reservationsRepository.getReservations(userInfo.userId);
       this.reservations = reservation;
-      console.log(this.reservations)
     }catch(e) {
       
       this.hasError = true;

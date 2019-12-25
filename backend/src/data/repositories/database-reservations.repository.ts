@@ -10,7 +10,6 @@ import { Halls } from "../repositories/database-halls.repository";
 import { Seat } from '../../../../shared/domain/event.model';
 import { ObjectID } from 'bson';
 import { async } from '@angular/core/testing';
-import { resolve } from 'url';
 
 export const Reservations = model('reservations', ReservationSchema);
 
@@ -68,13 +67,11 @@ export class DatabaseReservationsrepository extends IReservationsRepository {
         return new Promise(
             async (resolve, reject) => {
                 try {
-                    Reservations.find({_userReference:userId}, (err, res) => {
+                    Reservations.find({userReference:userId}, async (err, res) => {
                         if (err) {
                             reject(err);
                         } else {
-                            console.log(res);
-
-                            let reservations = res.map(r=> new Reservation(r._id,r.get('_eventReference') ,r.get('_userReference'),r.get('_seat')));
+                            let reservations = res.map(r=> new Reservation(r._id,r.get('eventReference') ,r.get('userReference'),r.get('seat')));
                             resolve(reservations);
                         }
                     });

@@ -3,6 +3,8 @@ import * as express from 'express';
 import { IReservationsRepository } from '../../../shared/repository-base/reservations.repository';
 import { Reservation } from '../../../shared/domain/reservation.model';
 import { Seat } from '../../../shared/domain/event.model';
+import { DatabaseReservationsrepository } from '../data/repositories/database-reservations.repository';
+import { async } from '@angular/core/testing';
 
 class ReservationsController {
     public path = "/reservations";
@@ -25,6 +27,7 @@ class ReservationsController {
             if (!request.body) {
                 return response.status(400).json({ error: 'required body' });
             }
+        
             if (!request.body.tickets) {
 
             }
@@ -47,11 +50,14 @@ class ReservationsController {
                 }
             }
             this.reservationsRepository.makeReservation(request.body.tickets.map(s => new Reservation(null, s.eventId, s.userId, new Seat(s.seat.row, s.seat.column, null)))).then((dbResponse) => {
+                
                 return response.status(201).json(dbResponse);
+
             }).catch((err) => {
                 return response.status(400).json({ error: err });
             });
         } catch (e) {
+
             response.status(500).json(e);
         }
 
@@ -76,7 +82,7 @@ class ReservationsController {
         }
     }
 
-    getReservations(request: express.Request, response: express.Response) {
+    getReservations = async(request: express.Request, response: express.Response)=> {
         try {
             if (!request.body) {
                 return response.status(400).json({ "message": "no body request was sent" })
@@ -84,7 +90,9 @@ class ReservationsController {
             if (!request.body.userId) {
                 return response.status(400).json({ "message": "no userId in body was sent" })
             }
+  
             this.reservationsRepository.getReservations(request.body.userId).then((reservations) => {
+                console.log(reservations)
                 return response.status(200).json(reservations)
             }).catch((error: Error) => {
                 console.log(error);

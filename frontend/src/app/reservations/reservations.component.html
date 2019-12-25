@@ -4,7 +4,7 @@
 
 <div class="halls">
     <div class="video" *ngFor="let item of reservations" >
-        <h2 class="video-title">{{item.event}}</h2>
+        <h2 class="video-title">Reservation No. {{item._ticketId}} Seat Number: S.{{item._seat.row}}{{item._seat.column}}</h2>
         <!-- <h3 class="video-component">{{item._hallShape}} X {{item._hallShape}}</h3> -->
     </div>
 </div>
