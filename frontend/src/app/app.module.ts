@@ -25,6 +25,8 @@ import { WebEventsRepository } from '../repositories/events.repository';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ViewHallsComponent } from './view-halls/view-halls.component';
 import { ReservationsComponent } from './reservations/reservations.component';
+import { IReservationsRepository } from '../../../shared/repository-base/reservations.repository';
+import { WebReservationsRepository } from '../repositories/reservations.repository';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,11 @@ import { ReservationsComponent } from './reservations/reservations.component';
     {
       provide : IHallsRepository,
       useClass : WebHallsRepository
+    },
+    {
+      provide : IReservationsRepository,
+      useClass: WebReservationsRepository
+      
     },
     { provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check' }
 

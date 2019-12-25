@@ -8,6 +8,7 @@ import { EventsComponent } from './events/events.component';
 import { CreateHallComponent } from './create-hall/create-hall.component';
 import { ViewHallsComponent } from './view-halls/view-halls.component';
 import { EventDetailsComponent } from './event-details/event-details.component';
+import { ReservationsComponent } from './reservations/reservations.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path:'halls',
         component: ViewHallsComponent
+      },
+      {
+        path: 'reservations',
+        component: ReservationsComponent
       }
     ]
   }

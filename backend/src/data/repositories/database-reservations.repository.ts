@@ -9,6 +9,8 @@ import { Events } from "../repositories/database-events.repository";
 import { Halls } from "../repositories/database-halls.repository";
 import { Seat } from '../../../../shared/domain/event.model';
 import { ObjectID } from 'bson';
+import { async } from '@angular/core/testing';
+import { resolve } from 'url';
 
 export const Reservations = model('reservations', ReservationSchema);
 
@@ -18,17 +20,17 @@ export class DatabaseReservationsrepository extends IReservationsRepository {
             try {
                 let addedTicket = [];
                 for (let ticket of tickets) {
-                    let user = await UserModel.findOne( { _id: ticket.userId}).exec();
+                    let user = await UserModel.findOne({ _id: ticket.userId }).exec();
                     if (user == null || user == undefined) {
                         return reject('User not found')
                     }
-                    let event = await Events.findOne({ _id: ticket.eventId}).exec();
+                    let event = await Events.findOne({ _id: ticket.eventId }).exec();
                     if (event == null || event == undefined) {
                         return reject('Event not found');
                     }
 
                     let eventSeats: Seat[] = event.get('seats').map(s => new Seat(s.get('row'), s.get('column'), s.get('isAvailable')));
-                    
+
                     if (ticket.seat.row > eventSeats.reduce((previous, current) => {
                         return (previous.row > current.row) ? previous : current;
                     }).row) {
@@ -39,7 +41,7 @@ export class DatabaseReservationsrepository extends IReservationsRepository {
                     }).column) {
                         return reject('Seat column is out of the hall.');
                     }
-                    let seatFromEvent = eventSeats.find(s => s.row == ticket.seat.row && s.column == ticket.seat.column);                    
+                    let seatFromEvent = eventSeats.find(s => s.row == ticket.seat.row && s.column == ticket.seat.column);
                     if (seatFromEvent != undefined && seatFromEvent.available) {
                         addedTicket.push({
                             userReference: ticket.userId,
@@ -62,17 +64,36 @@ export class DatabaseReservationsrepository extends IReservationsRepository {
             }
         });
     }
-    cancelReservation(reservationId: string): Promise<boolean> {
-        return new Promise(async (resolve, reject) => {
-            try {
-                let deletedObject = await Reservations.remove({ _id: reservationId }).exec()
-                resolve(deletedObject.deletedCount > 0);
-            } catch (e) {
-                console.log(e);
-                reject(e);
-            }
-        });
-    }
+    getReservations(userId:string): Promise<Reservation[]> {
+        return new Promise(
+            async (resolve, reject) => {
+                try {
+                    Reservations.find({_userReference:userId}, (err, res) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            console.log(res);
+
+                            let reservations = res.map(r=> new Reservation(r._id,r.get('_eventReference') ,r.get('_userReference'),r.get('_seat')));
+                            resolve(reservations);
+                        }
+                    });
+        }catch (e) {
+            reject(e);
+        }
+    });
+}
+cancelReservation(reservationId: string): Promise < boolean > {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let deletedObject = await Reservations.remove({ _id: reservationId }).exec()
+            resolve(deletedObject.deletedCount > 0);
+        } catch (e) {
+            console.log(e);
+            reject(e);
+        }
+    });
+}
 
 
 }
