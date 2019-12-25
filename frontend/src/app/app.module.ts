@@ -9,11 +9,13 @@ import { MatInputModule, MatButtonModule } from "@angular/material";
 import { ReactiveFormsModule } from "@angular/forms";
 import { IUsersRepository } from '../../../shared/repository-base/users.repository';
 import { WebUsersRepository } from '../repositories/users.repository';
+import { EventDetailsComponent } from './event-details/event-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    EventDetailsComponent,
   ],
   imports: [
     BrowserModule,
