@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     try{
       let response = await this._repo.login(this.usernameFormControl.value, this.passwordFormControl.value);
+      this._router.navigate(['home']);
     }catch(e) {
       this.showError();
     }finally {

@@ -1,0 +1,16 @@
+<h2 class="title-recent">All Events</h2>
+<p class="paragraph-videos">Here you can find all the events</p>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<button *ngIf="isOperaManager" mat-stroked-button>Add New Event</button>
+<div *ngIf="addingEvent">
+    
+</div>
+
+<div class="recent-videos">
+    <div class="video" *ngFor="let item of events" (click)="navigateToVideo(item.id)">
+        <img [src]='item._posterUrl' />
+        <h2 class="video-title">{{item._eventName}}</h2>
+        <h3 class="video-component">{{item._startsAt.toLocaleString()}}</h3>
+    </div>
+    <p *ngIf="hasError">Sorry, no events yet.</p>
+</div>

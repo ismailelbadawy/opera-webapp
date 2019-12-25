@@ -10,8 +10,9 @@ export class WebUsersRepository implements IUsersRepository {
     constructor(private _client: HttpClient) {
 
     }
-    async getUserInfo() : Promise<User>{
-        return JSON.parse(localStorage.getItem('user'));
+    getUserInfo() : User{
+        let user = JSON.parse(localStorage.getItem('user'));
+        return new User(user._userId, user._userType, user._username, user._firstName, user._lastName, user._birthDate, user._birthDate, user._city, user._email, user._address, null, null, user._approved, user._token);
     }
     async approveUser(user: import("../../../shared/domain/user.model").User): Promise<import("../../../shared/domain/user.model").User> {
         let approved = await this._client.post('/api/users/approve', { userId: user.userId }).toPromise();

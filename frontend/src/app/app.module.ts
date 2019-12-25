@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
-import { MatInputModule, MatButtonModule, MatCheckboxModule, MAT_CHECKBOX_CLICK_ACTION, MatSelectModule } from "@angular/material";
+import { MatInputModule, MatButtonModule, MatCheckboxModule, MAT_CHECKBOX_CLICK_ACTION, MatSelectModule, MatSpinner } from "@angular/material";
 import { ReactiveFormsModule } from "@angular/forms";
 import { IUsersRepository } from '../../../shared/repository-base/users.repository';
 import { WebUsersRepository } from '../repositories/users.repository';
@@ -16,6 +16,10 @@ import {MatNativeDateModule} from '@angular/material';
 import { ViewUsersComponent } from './view-users/view-users.component';
 import { IcteamNavbarComponent } from './icteam-navbar/icteam-navbar.component';
 import { HttpClientModule } from '@angular/common/http';
+import { EventsComponent } from './events/events.component';
+import { IEventsRepository } from '../../../shared/repository-base/events.repository';
+import { WebEventsRepository } from '../repositories/events.repository';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoginComponent,
     ViewUsersComponent,
     IcteamNavbarComponent,
-    RegisterComponent
+    RegisterComponent,
+    EventsComponent
   ],
   imports: [
     BrowserModule,
@@ -32,15 +37,21 @@ import { HttpClientModule } from '@angular/common/http';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
     HttpClientModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {
       provide: IUsersRepository,
       useClass: WebUsersRepository
+    },
+    {
+      provide : IEventsRepository,
+      useClass : WebEventsRepository
     },
     { provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check' }
 

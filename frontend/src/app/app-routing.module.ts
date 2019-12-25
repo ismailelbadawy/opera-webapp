@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ViewUsersComponent } from './view-users/view-users.component';
 import { IcteamNavbarComponent } from './icteam-navbar/icteam-navbar.component';
+import { EventsComponent } from './events/events.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
       {
         path : 'users',
         component : ViewUsersComponent
+      },
+      {
+        path: 'events',
+        component : EventsComponent
       }
     ]
   },
@@ -24,7 +29,6 @@ const routes: Routes = [
     path : 'register',
     component : RegisterComponent
   }
-  
 ];
 
 @NgModule({
