@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ViewUsersComponent } from './view-users/view-users.component';
 import { IcteamNavbarComponent } from './icteam-navbar/icteam-navbar.component';
+import { CreateHallComponent } from './create-hall/create-hall.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
         component : ViewUsersComponent
       }
     ]
+  },
+  {
+    path: 'createhall',
+    component: CreateHallComponent
   }
   
 ];
