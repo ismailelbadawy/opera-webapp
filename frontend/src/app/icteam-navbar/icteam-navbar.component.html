@@ -1,0 +1,14 @@
+<div class="header">
+  <div class="header-left">
+    <img routerLink="/" class="logo" src="../../assets/logo-cairo-opera-black.png" />
+  </div>
+  <div class="pill-nav">
+    <a routerLink="/home" [routerLinkActive]="['active']">Home</a>
+    <a routerLink="/users" [routerLinkActive]="['active']">Users</a>
+    <a routerLink="/events" [routerLinkActive]="['active']">Events</a>
+    <!-- <a routerLink = "/portal/posts" [routerLinkActive]="['active']">Posts</a> -->
+  </div>
+</div>
+<div class="main-content-router">
+  <router-outlet></router-outlet>
+</div>

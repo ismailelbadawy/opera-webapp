@@ -11,4 +11,6 @@ export abstract class IUsersRepository{
     
     /**Creates the user */
     abstract register(user : User, password : string) : Promise<User>;
+
+    abstract getUserInfo() : User;
 }

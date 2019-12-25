@@ -15,26 +15,28 @@ export const UserModel = model('user', UserSchema);
 mongoose.connection;
 
 export class DatabaseUsersRepository implements IUsersRepository {
+    getUserInfo(): User {
+        throw new Error("Method not implemented.");
+    }
 
     login(username: string, password: string): Promise<User> {
         return new Promise((resolve, reject) => {
-            UserModel.findOne({ userName : username }).then((value: any) => {
+            UserModel.findOne({ userName: username }).then((value: any) => {
                 let securer = new PasswordSecurer();
                 let isCorrect = securer.comparePassword(password, new Password(value.passwordSalt, value.passwordHash));
-                console.log(`Password ${password} and Password Hash : ${value.passwordHash}, Password Salt : ${value.passwordSalt}`);
-                if (isCorrect) {                    
+                if (isCorrect) {
                     let token = sign({
-                        userId : value._id,
-                        timestamp : new Date().getTime(),
-                        userType : value.userType,
-                        userEmail : value.email
+                        userId: value._id,
+                        timestamp: new Date().getTime(),
+                        userType: value.userType,
+                        userEmail: value.email
                     }, "ISMAILELBADAAWYANDISMAILHELMYCORPSECRETS");
                     resolve(new User(value._id, value.userType, value.userName, value.firstName, value.lastName, value.birthDate, value.gender, value.city, value.email, value.address, null, null, value.approved, token));
                 } else {
                     reject('Passwords do not match');
                 }
             }).catch((err) => {
-                reject({error: 'Username and password do not match'});
+                reject({ error: 'Username and password do not match' });
             });
         });
     }
@@ -124,7 +126,7 @@ export class DatabaseUsersRepository implements IUsersRepository {
         return new Promise((resolve, reject) => {
             UserModel.findByIdAndUpdate(user.userId,
                 {
-                    approved : true
+                    approved: true
                 },
                 async (err, result) => {
                     if (result == null) {
@@ -166,9 +168,12 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     removeUser(userId: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            let query = UserModel.remove({ _id: userId }, (err) => reject(err));
+            let query = UserModel.remove({ _id: userId }, (err) => { 
+                if (err){
+                    reject(err) 
+                }
+            });
             query.then((value) => {
-                
                 resolve(value.deletedCount != 0);
             });
         });
@@ -220,12 +225,12 @@ export class DatabaseUsersRepository implements IUsersRepository {
 
     getUnapprovedUsers(): Promise<User[]> {
         return new Promise((resolve, reject) => {
-            UserModel.find({ approved: false}, (err, res) => {
-                if(err) {
+            UserModel.find({}, (err, res) => {
+                if (err) {
                     reject(err);
                     return;
                 }
-                let users = res.map(s => new User(s._id,null, null, null, null, null, null, null, null, null, null, null, false, null));
+                let users = res.map(s => new User(s._id, s.get('userType'), s.get('userName'), null, null, null, null, null, null, null, null, null, s.get('approved'), null));
                 resolve(users);
             });
         });

@@ -17,7 +17,7 @@ class UsersController {
     public initializeRoutes() {
         this.router.post(this.path + '/login', this.login);
         this.router.post(this.path, this.register);
-        this.router.delete(this.path, this.removeUser);
+        this.router.post(this.path + '/delete', this.removeUser);
         this.router.put(this.path, this.editUser);
         this.router.put(this.path + '/type', this.changeType);
         this.router.post(this.path + '/approve', this.approveUser);
@@ -51,6 +51,7 @@ class UsersController {
             if (!request.body) {
                 return response.status(400).json({ "message": "no body request was sent" })
             }
+            console.log(request.body);
             if (!request.body.username) {
                 return response.status(400).json({ "message": "no username in body was sent" })
             }
@@ -120,7 +121,7 @@ class UsersController {
             if (!request.body.userId) {
                 return response.status(400).json({ "message": "no userId in body was sent" })
             }
-            await this.usersRepository.removeUser(request.body.userId).then(() => {
+            await this.usersRepository.removeUser(request.body.userId).then((dbResponse) => {
                 return response.status(200).send();
             }).catch((error) => {
                 console.log(error);

@@ -24,8 +24,7 @@ export const UserSchema: Schema = new Schema({
         type: String
     },
     gender: {
-        type: String,
-        enum: ['male', 'female']
+        type: String
     },
     birthDate: {
         type: Date
