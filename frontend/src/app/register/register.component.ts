@@ -49,8 +49,17 @@ export class RegisterComponent implements OnInit {
     this.hideError();
     this.isLoading = true;
     try{
-      let user = new User(null,UserType.CUSTOMER,this.usernameFormControl.value,this.firstNameFormControl.value,this.lastNameFormControl.value,this.birthDateFormControl.value,this.genderFormControl.value,this.cityFormControl.value,this.emailFormControl.value,this.addressFormControl.value,null,null,false,null)
-      let response = await this._repo.register(this.usernameFormControl.value, this.passwordFormControl.value)
+      let user = new User(null,UserType.CUSTOMER,
+        this.usernameFormControl.value,
+        this.firstNameFormControl.value,
+        this.lastNameFormControl.value,
+        this.birthDateFormControl.value,
+        this.genderFormControl.value,
+        this.cityFormControl.value,
+        this.emailFormControl.value,
+        this.addressFormControl.value,null,null,false,null)
+        console.log(user)
+      let response = await this._repo.register(user, this.passwordFormControl.value)
       
     }catch(e) {
       this.showError();
