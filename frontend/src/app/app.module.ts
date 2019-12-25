@@ -15,7 +15,7 @@ import { IHallsRepository } from '../../../shared/repository-base/halls.reposito
 import { RegisterComponent } from './register/register.component';
 import { MatDatepickerModule } from "@angular/material";
 import {MatNativeDateModule} from '@angular/material';
-
+import { EventDetailsComponent } from './event-details/event-details.component';
 import { ViewUsersComponent } from './view-users/view-users.component';
 import { IcteamNavbarComponent } from './icteam-navbar/icteam-navbar.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -34,6 +34,7 @@ import { ViewHallsComponent } from './view-halls/view-halls.component';
     IcteamNavbarComponent,
     RegisterComponent,
     EventsComponent,
+    EventDetailsComponent,
     ViewHallsComponent
   ],
   imports: [
