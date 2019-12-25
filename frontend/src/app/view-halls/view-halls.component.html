@@ -1,1 +1,11 @@
-<p>view-halls works!</p>
+<h2 class="title-recent">All Halls</h2>
+<p class="paragraph-videos">Here you can find all the Halls</p>
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<div class="halls">
+    <div class="video" *ngFor="let item of halls" >
+        <h2 class="video-title">{{item.hallName}}</h2>
+        <h3 class="video-component">{{item._hallShape}} X {{item._hallShape}}</h3>
+    </div>
+</div>
+<a href = "/halls/create"><button mat-button>Add Hall </button></a>

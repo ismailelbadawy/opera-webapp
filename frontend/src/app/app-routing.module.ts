@@ -6,6 +6,7 @@ import { ViewUsersComponent } from './view-users/view-users.component';
 import { IcteamNavbarComponent } from './icteam-navbar/icteam-navbar.component';
 import { EventsComponent } from './events/events.component';
 import { CreateHallComponent } from './create-hall/create-hall.component';
+import { ViewHallsComponent } from './view-halls/view-halls.component';
 
 const routes: Routes = [
   {
@@ -27,12 +28,16 @@ const routes: Routes = [
       {
         path: 'events',
         component : EventsComponent
+      },
+      {
+        path: 'halls/create',
+        component: CreateHallComponent
+      },
+      {
+        path:'halls',
+        component: ViewHallsComponent
       }
     ]
-  },
-  {
-    path: 'createhall',
-    component: CreateHallComponent
   }
 ];
 

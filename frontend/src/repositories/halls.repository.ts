@@ -18,8 +18,10 @@ export class WebHallsRepository implements IHallsRepository {
     editHall(hall: import("../../../shared/domain/hall.model").Hall): Promise<import("../../../shared/domain/hall.model").Hall> {
         throw new Error("Method not implemented.");
     }
-    getAllHalls(): Promise<import("../../../shared/domain/hall.model").Hall[]> {
-        throw new Error("Method not implemented.");
+    async getAllHalls(): Promise<import("../../../shared/domain/hall.model").Hall[]> {
+        let response : any = await this._client.get('/api/halls').toPromise()
+
+        return response.map(h => new Hall(h._hallId,h._hallName,h._hallShape))
     }
 
 

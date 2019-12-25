@@ -77,6 +77,7 @@ class HallsController {
         try{
             let halls = await this.hallsRepository.getAllHalls();
             response.status(200).json(halls);
+            console.log(halls)
         }catch(e) {
             console.log(e);
             response.status(500).json(e);
