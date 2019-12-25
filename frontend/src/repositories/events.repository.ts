@@ -13,8 +13,9 @@ export class WebEventsRepository implements IEventsRepository {
         let createdEvent : any = await this._client.post('/api/events', { eventName : event.eventName, description : event.description, hallId : event.hall.hallId, startsAt : event.startsAt}).toPromise();
         return new Event(createdEvent._eventId, createdEvent._eventName, createdEvent._description, createdEvent._posterUrl, createdEvent._startsAt, new Hall(createdEvent._hall._hallId, createdEvent._hall._hallName, null), []);
     }    
-    cancelEvent(eventId: string): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async cancelEvent(eventId: string): Promise<boolean> {
+        let response = await this._client.post('/api/events/delete', { eventId : eventId}).toPromise();
+        return true;
     }
     uploadPosterUrl(eventId: string, posterUrl: string): Promise<boolean> {
         throw new Error("Method not implemented.");

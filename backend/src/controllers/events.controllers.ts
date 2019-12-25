@@ -16,7 +16,7 @@ class EventsController {
         this.router.post(this.path, this.createEvent);
         this.router.put(this.path, this.editEvent);
         this.router.put(this.path + '/upload-poster', this.uploadPosterUrl);
-        this.router.delete(this.path, this.cancelEvent);
+        this.router.post(this.path + '/delete', this.cancelEvent);
         this.router.get(this.path + '/seats', this.getAvailableEvents);
     }
 

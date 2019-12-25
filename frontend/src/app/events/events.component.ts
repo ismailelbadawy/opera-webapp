@@ -85,7 +85,7 @@ export class EventsComponent implements OnInit {
   async cancelEvent(eventId : string) {
     try{
       let response = await this._repo.cancelEvent(eventId);
-      this.events.splice(this.events.findIndex(z => z.eventId == eventId));
+      this.events.splice(this.events.findIndex(z => z.eventId == eventId), 1);
     }catch(e) {
       alert(`Cannot remove ${this.events.find(z => z.eventId == eventId).eventName}`);
     }
