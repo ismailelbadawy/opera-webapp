@@ -1,0 +1,22 @@
+<div class="my-container">
+  <div class="form-container">
+    <img class="form-logo" src="../../assets/logo-cairo-opera.png" />
+    <h3>
+Create Halls
+</h3>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Hall Name"  value="" [formControl]='hallName'>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input type="number" matInput placeholder="Number Of Rows"  value="" [formControl]='numRowsFormControl'>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input type="number"  matInput placeholder="Number Of Seats per row"  value="" [formControl]='numSeatsFormControl'>
+    </mat-form-field>
+    
+    <button *ngIf="!isLoading" (click)='createHall();' class="example-full-width" mat-button>Create Hall!</button>
+    <div *ngIf="hasError" id="login-error" class="error-text">
+      <p>Login failed try again.</p>
+    </div>
+  </div>
+</div>

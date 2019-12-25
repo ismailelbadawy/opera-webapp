@@ -9,6 +9,9 @@ import { MatInputModule, MatButtonModule, MatCheckboxModule, MAT_CHECKBOX_CLICK_
 import { ReactiveFormsModule } from "@angular/forms";
 import { IUsersRepository } from '../../../shared/repository-base/users.repository';
 import { WebUsersRepository } from '../repositories/users.repository';
+import { CreateHallComponent } from './create-hall/create-hall.component';
+import { WebHallsRepository } from '../repositories/halls.repository';
+import { IHallsRepository } from '../../../shared/repository-base/halls.repository';
 import { RegisterComponent } from './register/register.component';
 import { MatDatepickerModule } from "@angular/material";
 import {MatNativeDateModule} from '@angular/material';
@@ -25,6 +28,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   declarations: [
     AppComponent,
     LoginComponent,
+    CreateHallComponent,
     ViewUsersComponent,
     IcteamNavbarComponent,
     RegisterComponent,
@@ -38,6 +42,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatButtonModule,
     ReactiveFormsModule,
     MatCheckboxModule,
+    HttpClientModule,
     MatDatepickerModule,
     MatNativeDateModule,
     HttpClientModule,
@@ -52,6 +57,10 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     {
       provide : IEventsRepository,
       useClass : WebEventsRepository
+    },
+    {
+      provide : IHallsRepository,
+      useClass : WebHallsRepository
     },
     { provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check' }
 
