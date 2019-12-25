@@ -27,7 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
     CreateHallComponent,
     ViewUsersComponent,
     IcteamNavbarComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +40,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatDatepickerModule,
     MatNativeDateModule,
     HttpClientModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [
     {
