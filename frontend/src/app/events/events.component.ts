@@ -81,4 +81,17 @@ export class EventsComponent implements OnInit {
       alert(`Cannot create this event`);
     }
   }
+
+  async cancelEvent(eventId : string) {
+    try{
+      let response = await this._repo.cancelEvent(eventId);
+      this.events.splice(this.events.findIndex(z => z.eventId == eventId));
+    }catch(e) {
+      alert(`Cannot remove ${this.events.find(z => z.eventId == eventId).eventName}`);
+    }
+  }
+
+  navigateToEvent(eventId : string) {
+    console.log(`Should Navigate`);
+  }
 }
