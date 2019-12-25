@@ -23,6 +23,7 @@ import { EventsComponent } from './events/events.component';
 import { IEventsRepository } from '../../../shared/repository-base/events.repository';
 import { WebEventsRepository } from '../repositories/events.repository';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ViewHallsComponent } from './view-halls/view-halls.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ViewUsersComponent,
     IcteamNavbarComponent,
     RegisterComponent,
-    EventsComponent
+    EventsComponent,
+    ViewHallsComponent
   ],
   imports: [
     BrowserModule,
