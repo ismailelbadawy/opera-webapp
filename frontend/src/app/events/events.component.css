@@ -74,6 +74,14 @@ h3{
     padding-left: 8px;
 }
 
+.add-event {
+    padding-left: 8px;
+}
+
+.form-example {
+    width: 40%;
+}
+
 @media only screen and (max-width: 800px) {
     .video {
         width: 200px;

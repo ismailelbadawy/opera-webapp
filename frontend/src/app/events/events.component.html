@@ -1,9 +1,30 @@
 <h2 class="title-recent">All Events</h2>
 <p class="paragraph-videos">Here you can find all the events</p>
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<button *ngIf="isOperaManager" mat-stroked-button>Add New Event</button>
-<div *ngIf="addingEvent">
-    
+<button *ngIf="isOperaManager" mat-stroked-button (click)='toggleEdit();'>{{buttonText}}</button>
+<div class="add-event" *ngIf="addingEvent">
+    <p>Add Event</p>
+    <mat-form-field class="form-example" >
+        <input matInput placeholder="Event Name" [formControl]='eventNameFormControl'>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="form-example" >
+        <textarea matInput placeholder="Description" [formControl]='descriptionFormControl'></textarea>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Hall</mat-label>
+        <mat-select [formControl]='hallFormControl'>
+            <mat-option *ngFor="let hall of this.halls" [value]="hall._hallId">
+                {{hall._hallName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <input matInput type="datetime-local" placeholder="Event Date" [formControl]='startsAtFormControl' value="{{defaultDate}}">
+    </mat-form-field>
+    <button mat-button (click)="addEvent();">Add</button>
 </div>
 
 <div class="recent-videos">

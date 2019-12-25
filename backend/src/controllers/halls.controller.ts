@@ -76,7 +76,7 @@ class HallsController {
     getHalls = async (request : express.Request, response : express.Response) => {
         try{
             let halls = await this.hallsRepository.getAllHalls();
-            response.status(200).json(halls);
+            return response.status(200).json(halls);
         }catch(e) {
             console.log(e);
             response.status(500).json(e);

@@ -127,8 +127,6 @@ export class DatabaseEventsRepository implements IEventsRepository {
                     if (err) {
                         reject(err);
                     } else {
-                        console.log(result);
-                        
                         let events = result.map(s => new Event(s._id, s.get('eventName'), s.get('description'),s.get('posterUrl'),s.get('startsAt'), null, s.get('seats').map(z => new Seat(z.row, z.column, z.isAvailable))));
                         resolve(events);
                     }
